@@ -1,7 +1,7 @@
 ---
 name: "Muhamed Turkanović"
 title: "izr. prof. dr."
-role: "Researcher"
+role: "Visokošolski učitelj  izredni profesor"
 email: "muhamed.turkanovic@um.si"
 phone: "(02) 220 7351"
 office: "G2-1N.03"
