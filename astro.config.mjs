@@ -31,6 +31,52 @@ export default defineConfig({
         locale: 'sl',
         collections: [
           {
+            name: 'about',
+            label: 'O inštitutu',
+            folder: 'src/content/about',
+            create: true,
+            slug: '{{slug}}',
+            fields: [
+              { name: 'title', label: 'Naslov', widget: 'string' },
+              {
+                name: 'subtitle',
+                label: 'Podnaslov',
+                widget: 'string',
+                required: false,
+              },
+              {
+                name: 'contactEmail',
+                label: 'Kontakt — e-pošta',
+                widget: 'string',
+                required: false,
+              },
+              {
+                name: 'contactAddress',
+                label: 'Kontakt — naslov',
+                widget: 'string',
+                required: false,
+              },
+              {
+                name: 'contactPhone',
+                label: 'Kontakt — telefon',
+                widget: 'string',
+                required: false,
+              },
+              {
+                name: 'contactWebsite',
+                label: 'Kontakt — spletna stran',
+                widget: 'string',
+                required: false,
+              },
+              {
+                name: 'body',
+                label: 'Vsebina strani',
+                widget: 'markdown',
+                required: false,
+              },
+            ],
+          },
+          {
             name: 'laboratories',
             label: 'Laboratoriji',
             folder: 'src/content/laboratories',

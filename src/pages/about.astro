@@ -1,7 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import SectionNews from "../components/SectionNews.astro";
-import { getCollection } from "astro:content";
+import { getCollection, getEntry, render } from "astro:content";
 import { Image } from "astro:assets";
 import { readFileSync } from "fs";
 import { resolve } from "path";
@@ -67,141 +67,45 @@ const allProjects     = await getCollection("projects");
 const highlightedNews         = findById(allNews, highlightedNewsIds).slice(0, 3);
 const highlightedAchievements = findById(allAchievements, highlightedAchievementsIds).slice(0, 3);
 const highlightedProjects     = findById(allProjects, highlightedProjectsIds).slice(0, 3);
+
+const aboutEntry = await getEntry("about", "institute");
+const { Content } = await render(aboutEntry);
+const aboutData = aboutEntry.data;
+const hasContact = aboutData.contactEmail || aboutData.contactAddress || aboutData.contactPhone || aboutData.contactWebsite;
 ---
 <Base title="About the Institute" sidebarLinks={sidebarLinks}>
 
-  <h1 class="page-title">Inštitut za Informatiko</h1>
+  <h1 class="page-title">{aboutData.title}</h1>
   <div class="page-title-rule"></div>
-  <p class="page-subtitle">
-    Fakulteta za elektrotehniko, računalništvo in informatiko · Univerza v Mariboru
-  </p>
+  {aboutData.subtitle && (
+    <p class="page-subtitle">
+      {aboutData.subtitle}
+    </p>
+  )}
 
-  
   <div class="card">
 
+    <Content />
 
-      <p>
-        Inštitut za informatiko je eden izmed osmih inštitutov Fakultete za
-        elektrotehniko, računalništvo in informatiko Univerze v Mariboru.
-        Predstavlja osrednje raziskovalno, razvojno in pedagoško okolje na področju
-        informatike na UM FERI ter povezuje raziskovalce, pedagoge in industrijske
-        partnerje pri razvoju sodobnih informacijskih rešitev.
-      </p>
-
-      <p>
-        Naše poslanstvo je ustvarjanje novega znanja, njegov prenos v gospodarstvo
-        in družbo ter izobraževanje prihodnjih generacij strokovnjakov s področja
-        računalništva in informatike. Aktivno sodelujemo v številnih nacionalnih in
-        mednarodnih raziskovalnih projektih ter objavljamo rezultate v uglednih
-        znanstvenih revijah in na mednarodnih konferencah.
-      </p>
-
-      <h2>Naše dejavnosti</h2>
-
-      <h3>Znanstveno-raziskovalna dejavnost</h3>
-
-      <p>
-        Raziskujemo področja razvoja varnih, inteligentnih in zanesljivih
-        informacijskih sistemov, rešitev in storitev. Naše raziskave obsegajo
-        podatkovno inženirstvo, velepodatkovne tehnologije, umetno inteligenco,
-        inteligentne sisteme, programsko inženirstvo, kibernetsko varnost,
-        digitalno forenziko, avtomatizacijo procesov ter centralizirane in
-        decentralizirane arhitekture informacijskih sistemov.
-      </p>
-
-      <p>
-        Inštitut je nosilec raziskovalnega programa ARIS
-        <strong>Informacijski sistemi (P2-0057)</strong>, ki predstavlja eno
-        ključnih raziskovalnih skupin na področju informatike v Sloveniji.
-      </p>
-
-      <h3>Strokovno-tehnična dejavnost</h3>
-
-      <p>
-        V sodelovanju z industrijo in javnim sektorjem razvijamo referenčne
-        informacijske rešitve, prototipe in napredne programske sisteme.
-        Posebno pozornost namenjamo prenosu raziskovalnih rezultatov v prakso,
-        razvoju inovativnih tehnologij ter podpori digitalni preobrazbi podjetij
-        in organizacij.
-      </p>
-
-      <h3>Diseminacijska dejavnost</h3>
-
-      <p>
-        Znanje širimo z organizacijo znanstvenih konferenc, strokovnih seminarjev,
-        delavnic, poletnih šol in drugih dogodkov. Aktivno sodelujemo pri promociji
-        informatike ter povezovanju akademskega okolja z gospodarstvom.
-      </p>
-
-      <h3>Pedagoška dejavnost</h3>
-
-      <p>
-        Inštitut je nosilec študijskih programov s področja informatike na UM FERI
-        ter sodeluje pri izvajanju številnih drugih dodiplomskih in podiplomskih
-        programov Univerze v Mariboru.
-      </p>
-
-      <ul>
-        <li>Informatika in podatkovne tehnologije (UN)</li>
-        <li>Informatika in tehnologije komuniciranja (VS)</li>
-        <li>Informatika in podatkovne tehnologije (MAG)</li>
-      </ul>
-
-      <h2>Organiziranost</h2>
-
-      <p>
-        Raziskovalno delo poteka v petih laboratorijih:
-      </p>
-
-      <ul>
-        <li>Laboratorij za informacijske sisteme</li>
-        <li>Laboratorij za podatkovne tehnologije</li>
-        <li>Laboratorij za kibernetsko varnost in digitalno forenziko</li>
-        <li>Laboratorij za inteligentne sisteme</li>
-        <li>Laboratorij za sisteme v realnem času</li>
-      </ul>
-
-      <p>V okviru laboratorijev delujejo tudi naslednje interesne skupine:</p>
-
-      <ul>
-        <li>Blockchain Lab:UM</li>
-        <li>CyberSec Lab:UM</li>
-        <li>DF Lab:UM</li>
-        <li>UX Lab:UM</li>
-        <li>Ladies in Informatics</li>
-      </ul>
-
-      <p>
-        Inštitut zaposluje približno 55 raziskovalcev, pedagogov in strokovnih
-        sodelavcev, ki izvajajo raziskovalno, razvojno in pedagoško dejavnost.
-      </p>
-
-      <h2>Zgodovina</h2>
-
-      <p>
-        Inštitut za informatiko je bil ustanovljen leta 1993, njegovi raziskovalci
-        pa področje računalništva in informatike na Univerzi v Mariboru razvijajo že
-        od sedemdesetih let prejšnjega stoletja. Med pomembnejše dosežke sodijo
-        razvoj prvega slovenskega mikroračunalnika UMRS-1, razvoj teleinformacijskih
-        sistemov za železniški promet ter številni uspešni raziskovalno-razvojni
-        projekti v sodelovanju z gospodarstvom.
-      </p>
-
-      <p>
-        Tradicijo uspešnega prenosa znanja v prakso danes nadaljujemo z razvojem
-        sodobnih informacijskih rešitev, sodelovanjem v evropskih raziskovalnih
-        projektih ter izobraževanjem novih generacij strokovnjakov s področja
-        informatike.
-      </p>
-
-      <h2>Kontakt</h2>
-
-      <ul class="contact-info">
-        <li><strong>E-pošta:</strong> <a href="mailto:informatika@um.si">informatika@um.si</a></li>
-        <li><strong>Naslov:</strong> Koroška cesta 46, 2000 Maribor, Slovenija</li>
-        <li><strong>Telefon:</strong> +386 (0)2 220 7359</li>
-        <li><strong>Splet:</strong> <a href="https://ii.feri.um.si">ii.feri.um.si</a></li>
-      </ul>
+    {hasContact && (
+      <>
+        <h2>Kontakt</h2>
+        <ul class="contact-info">
+          {aboutData.contactEmail && (
+            <li><strong>E-pošta:</strong> <a href={`mailto:${aboutData.contactEmail}`}>{aboutData.contactEmail}</a></li>
+          )}
+          {aboutData.contactAddress && (
+            <li><strong>Naslov:</strong> {aboutData.contactAddress}</li>
+          )}
+          {aboutData.contactPhone && (
+            <li><strong>Telefon:</strong> {aboutData.contactPhone}</li>
+          )}
+          {aboutData.contactWebsite && (
+            <li><strong>Splet:</strong> <a href={aboutData.contactWebsite}>{aboutData.contactWebsite.replace(/^https?:\/\//, "")}</a></li>
+          )}
+        </ul>
+      </>
+    )}
 
   </div>
   <SectionNews tag="interest-groups" label="Najnovejše novice" />

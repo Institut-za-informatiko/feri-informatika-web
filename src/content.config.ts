@@ -168,6 +168,19 @@ const achievements = defineCollection({
     }),
 });
 
+const about = defineCollection({
+  loader: sveltiaLoader('about'),
+  schema: z.object({
+    title: z.string(),
+    subtitle: z.string().optional(),
+    contactEmail: z.string().optional(),
+    contactAddress: z.string().optional(),
+    contactPhone: z.string().optional(),
+    contactWebsite: z.string().optional(),
+    body: z.string().optional(),
+  }),
+});
+
 const heroSlides = defineCollection({
   loader: sveltiaLoader('heroSlides'),
   schema: ({ image }) =>
@@ -180,6 +193,7 @@ const heroSlides = defineCollection({
 });
 
 export const collections = {
+  about,
   laboratories,
   interestGroups,
   staff,
