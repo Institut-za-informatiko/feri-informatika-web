@@ -1,7 +1,7 @@
 ---
 name: "Tina Beranič"
 title: "doc. dr. Tina Beranič, mag. inž. inf. in tehnol. kom."
-role: "Raziskovalec"
+role: "Raziskovalka"
 email: "tina.beranic@um.si"
 phone: "(02) 220-7354"
 office: "G2-1.N.12"
