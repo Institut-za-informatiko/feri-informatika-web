@@ -1,0 +1,31 @@
+---
+import Base from "../../layouts/Base.astro";
+import SectionNews from "../../components/SectionNews.astro";
+import { getEntry, render } from "astro:content";
+
+const base = import.meta.env.BASE_URL;
+
+const sidebarLinks = [
+  { label: "Raziskovalna skupina", href: `${base}/research/group` },
+  { label: "Raziskovalni projekti",  href: `${base}/research/projects` },
+  { label: "Publikacije",       href: `${base}/research/publications` },
+  { label: "Etični odbor",   href: `${base}/research/ethics` },
+];
+
+const entry = await getEntry("research", "group");
+const { Content } = await render(entry);
+---
+<Base title="Raziskovalna skupina" sidebarLinks={sidebarLinks}>
+
+  <h2 style="font-family:'Titillium Web',sans-serif; font-size:1.4rem; font-weight:400;
+             color:#222; margin-bottom:1.25rem;">
+    Raziskovalna skupina
+  </h2>
+
+  <div class="card">
+    <Content />
+  </div>
+
+  <SectionNews tag="scientific" label="ZADNJE NOVICE" />
+
+</Base>

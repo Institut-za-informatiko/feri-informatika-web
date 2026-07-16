@@ -9,7 +9,6 @@ export const translations = {
   sl: {
     // ── Navigation ──────────────────────────────────────────────
     'nav.about': 'O inštitutu',
-    'nav.researchGroup': 'Raziskovalna skupina',
     'nav.research': 'Raziskovanje',
     'nav.studies': 'Študij IPT & ITK',
     'nav.conferences': 'Konferenčne aktivnosti',
@@ -44,6 +43,7 @@ export const translations = {
 
     // ── Research ─────────────────────────────────────────────────
     'research.title': 'Raziskovanje',
+    'research.sidebar.researchGroup': 'Raziskovalna skupina',
     'research.sidebar.projects': 'Raziskovalni projekti',
     'research.sidebar.publications': 'Publikacije',
     'research.sidebar.ethics': 'Etična komisija',
@@ -107,7 +107,6 @@ export const translations = {
   en: {
     // ── Navigation ──────────────────────────────────────────────
     'nav.about': 'About the Institute',
-    'nav.researchGroup': 'Research Group',
     'nav.research': 'Research',
     'nav.studies': 'Studies IPT & ITK',
     'nav.conferences': 'Conference Activities',
@@ -142,6 +141,7 @@ export const translations = {
 
     // ── Research ─────────────────────────────────────────────────
     'research.title': 'Research',
+    'research.sidebar.researchGroup': 'Research Group',
     'research.sidebar.projects': 'Research Projects',
     'research.sidebar.publications': 'Publications',
     'research.sidebar.ethics': 'Ethics Committee',

@@ -8,6 +8,7 @@ const opinions = (await getCollection("ethicsOpinions"))
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
 const sidebarLinks = [
+  { label: "Raziskovalna skupina", href: `${base}/research/group` },
   { label: "Raziskovalni projekti",  href: `${base}/research/projects` },
   { label: "Publikacije",       href: `${base}/research/publications` },
   { label: "Etični odbor",   href: `${base}/research/ethics` },

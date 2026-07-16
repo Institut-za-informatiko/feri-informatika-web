@@ -1,6 +1,13 @@
 import { defineCollection, z } from 'astro:content';
 import { sveltiaLoader } from 'astro-loader-sveltia-cms/loader';
 
+const research = defineCollection({
+  loader: sveltiaLoader('research'),
+  schema: z.object({
+    body: z.string().optional(),
+  }),
+});
+
 const laboratories = defineCollection({
   loader: sveltiaLoader('laboratories'),
   schema: z.object({
@@ -194,6 +201,7 @@ const heroSlides = defineCollection({
 
 export const collections = {
   about,
+  research,
   laboratories,
   interestGroups,
   staff,

@@ -8,6 +8,7 @@ const lang = "en";
 const t = useTranslations(lang);
 
 const sidebarLinks = [
+  { label: t("research.sidebar.researchGroup"), href: localePath(lang, "/research/group") },
   { label: t("research.sidebar.projects"),     href: localePath(lang, "/research/projects") },
   { label: t("research.sidebar.publications"), href: localePath(lang, "/research/publications") },
   {

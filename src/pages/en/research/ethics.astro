@@ -12,6 +12,7 @@ const opinions = (await getCollection("ethicsOpinions"))
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
 const sidebarLinks = [
+  { label: t("research.sidebar.researchGroup"), href: localePath(lang, "/research/group") },
   { label: t("research.sidebar.projects"),     href: localePath(lang, "/research/projects") },
   { label: t("research.sidebar.publications"), href: localePath(lang, "/research/publications") },
   { label: t("research.sidebar.ethics"),       href: localePath(lang, "/research/ethics") },

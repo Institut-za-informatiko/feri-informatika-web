@@ -67,11 +67,13 @@ This is an **Astro SSG** project all content is compiled into static HTML files 
 src/pages/
 ├── index.astro                    ← SL (/)
 ├── about.astro
-├── research-group.astro
+├── research/
+│   └── group.astro
 └── en/
     ├── index.astro                ← EN (/en/)
     ├── about.astro
-    └── research-group.astro
+    └── research/
+        └── group.astro
 ```
 
 **Rule:** Every Slovenian page must have an English equivalent in the `en/` folder. I18n is handled automatically by `astro.config.mjs`.

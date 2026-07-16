@@ -77,6 +77,21 @@ export default defineConfig({
             ],
           },
           {
+            name: 'research',
+            label: 'Raziskovalna skupina',
+            folder: 'src/content/research',
+            create: true,
+            slug: '{{slug}}',
+            fields: [
+              {
+                name: 'body',
+                label: 'Vsebina strani',
+                widget: 'markdown',
+                required: false,
+              },
+            ],
+          },
+          {
             name: 'laboratories',
             label: 'Laboratoriji',
             folder: 'src/content/laboratories',

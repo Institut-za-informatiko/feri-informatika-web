@@ -15,6 +15,7 @@ const base = import.meta.env.BASE_URL;
 const allProjects = await getCollection("projects");
 
 const sidebarLinks = [
+  { label: "Raziskovalna skupina", href: `${base}/research/group` },
   {
     label: "Raziskovalni projekti",
     href: `${base}/research/projects`,
