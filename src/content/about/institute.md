@@ -8,7 +8,7 @@ contactWebsite: https://ii.feri.um.si
 ---
 
 Inštitut za informatiko je eden izmed osmih inštitutov Fakultete za
-elektrotehniko, računalništvo in informatiko Univerze v Mariboru.
+elektrotehniko, računalništvo in informatiko Univerze v Mariboru (UM FERI).
 Predstavlja osrednje raziskovalno, razvojno in pedagoško okolje na področju
 informatike na UM FERI ter povezuje raziskovalce, pedagoge in industrijske
 partnerje pri razvoju sodobnih informacijskih rešitev.
