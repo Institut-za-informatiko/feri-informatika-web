@@ -32,6 +32,14 @@ jobs:
           node-version: 22
           cache: pnpm
 
+      - name: Cache Astro image cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.astro
+          key: astro-image-cache-${{ github.run_id }}
+          restore-keys: |
+            astro-image-cache-
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
