@@ -5,24 +5,48 @@ import { getAlternateUrl, getNavLinks, localePath } from "@/i18n/utils";
 interface Props {
   title: string;
   lang?: Lang;
+  sidebarTitle?: string;
   sidebarLinks?: { label: string; href: string; children?: { label: string; href: string }[] }[];
   fullWidth?: boolean;
   wide?: boolean;
 }
 
-const { title, sidebarLinks, fullWidth, wide } = Astro.props;
+const { title, sidebarTitle, sidebarLinks, fullWidth, wide } = Astro.props;
 const lang: Lang = Astro.props.lang ?? getLangFromUrl(Astro.url, import.meta.env.BASE_URL);
 const t = useTranslations(lang);
 const alternateUrl = getAlternateUrl(Astro.url, lang);
 const mainNav = getNavLinks(lang);
 const base = import.meta.env.BASE_URL;
+
+function getSidebarTitle(): string {
+  if (sidebarTitle) return sidebarTitle;
+
+  const sidebarPaths = (sidebarLinks ?? []).flatMap(link => [
+    link.href,
+    ...(link.children ?? []).map(child => child.href),
+  ]);
+
+  if (sidebarPaths.some(path => path.includes('/research/'))) return t('research.title');
+  if (sidebarPaths.some(path => path.includes('/studies/'))) return t('studies.title');
+  if (sidebarPaths.some(path => path.includes('/conferences'))) return t('conferences.title');
+  if (sidebarPaths.some(path => path.includes('/industry'))) return t('industry.title');
+  if (sidebarPaths.some(path =>
+    path.includes('/laboratories') ||
+    path.includes('/interest-groups') ||
+    path.includes('/staff')
+  )) return t('about.title');
+
+  return title;
+}
+
+const resolvedSidebarTitle = getSidebarTitle();
 ---
 <!doctype html>
 <html lang={lang}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href={`${base}/styles/global.css`} />
   <title>{title} — Institute of Informatics FERI</title>
 </head>
@@ -83,7 +107,7 @@ const base = import.meta.env.BASE_URL;
 
     {sidebarLinks && sidebarLinks.length > 0 && (
       <aside class="sidebar">
-        <div class="sidebar-header">{lang === "sl" ? "Oddelek" : "Section"}</div>
+        <div class="sidebar-header">{resolvedSidebarTitle}</div>
         {sidebarLinks.map(link => {
           const currentPath = decodeURIComponent(Astro.url.pathname);
           const isCurrentPage = currentPath === link.href;
