@@ -140,5 +140,16 @@ const resolvedSidebarTitle = getSidebarTitle();
   </div>
 )}
 
+<script>
+  const siteHeader = document.querySelector<HTMLElement>(".site-header");
+
+  function updateHeaderScrollState() {
+    siteHeader?.classList.toggle("is-scrolled", window.scrollY > 0);
+  }
+
+  updateHeaderScrollState();
+  window.addEventListener("scroll", updateHeaderScrollState, { passive: true });
+</script>
+
 </body>
 </html>
