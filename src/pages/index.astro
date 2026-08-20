@@ -74,10 +74,14 @@ const slides = slidesRaw.map(s => ({
     <button class="hero-carousel-arrow hero-carousel-next" aria-label="Next slide">›</button>
 
     <div class="hero-carousel-track" id="hero-track">
-      {slides.map(s => (
+      {slides.map((s, i) => (
         <div class="hero-slide">
           <div class="hero-slide-text">
-            <h1 class="hero-slide-title">{s.title}</h1>
+            {i === 0 ? (
+              <h1 class="hero-slide-title">{s.title}</h1>
+            ) : (
+              <h2 class="hero-slide-title">{s.title}</h2>
+            )}
             <p class="hero-slide-subtitle">{s.subtitle}</p>
           </div>
           <div class="hero-slide-image" style={`background-image: url(${s.image});`}></div>

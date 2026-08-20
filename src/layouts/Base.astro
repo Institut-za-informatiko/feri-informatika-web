@@ -2,11 +2,17 @@
 import { getLangFromUrl, useTranslations, type Lang } from "@/i18n/translations";
 import { getAlternateUrl, getNavLinks, localePath } from "@/i18n/utils";
 
+interface SidebarLink {
+  label: string;
+  href: string;
+  children?: { label: string; href: string; sidebarLevel?: "tertiary" }[];
+}
+
 interface Props {
   title: string;
   lang?: Lang;
   sidebarTitle?: string;
-  sidebarLinks?: { label: string; href: string; children?: { label: string; href: string }[] }[];
+  sidebarLinks?: SidebarLink[];
   fullWidth?: boolean;
   wide?: boolean;
 }
@@ -21,10 +27,7 @@ const base = import.meta.env.BASE_URL;
 function getSidebarTitle(): string {
   if (sidebarTitle) return sidebarTitle;
 
-  const sidebarPaths = (sidebarLinks ?? []).flatMap(link => [
-    link.href,
-    ...(link.children ?? []).map(child => child.href),
-  ]);
+  const sidebarPaths = getSidebarPaths(sidebarLinks ?? []);
 
   if (sidebarPaths.some(path => path.includes('/research/'))) return t('research.title');
   if (sidebarPaths.some(path => path.includes('/studies/'))) return t('studies.title');
@@ -39,14 +42,27 @@ function getSidebarTitle(): string {
   return title;
 }
 
+function getSidebarPaths(links: SidebarLink[]): string[] {
+  return links.flatMap(link => [
+    link.href,
+    ...(link.children ?? []).map(child => child.href),
+  ]);
+}
+
+function isSidebarLinkActive(link: SidebarLink, currentPath: string): boolean {
+  return currentPath === decodeURIComponent(link.href) ||
+    (link.children ?? []).some(child => currentPath === decodeURIComponent(child.href));
+}
+
 const resolvedSidebarTitle = getSidebarTitle();
+const currentPath = decodeURIComponent(Astro.url.pathname);
 ---
 <!doctype html>
 <html lang={lang}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href={`${base}/styles/global.css`} />
   <title>{title} — Institute of Informatics FERI</title>
 </head>
@@ -57,13 +73,7 @@ const resolvedSidebarTitle = getSidebarTitle();
   <header class="site-header">
     <div class="header-inner">
 
-      <a href={localePath(lang, "/")} class="logo-group">
-        <img src={`${base}/logos/ii-logo.png`} alt="Inštitut za Informatiko"
-            onerror="this.style.display='none'" />
-        <img src={`${base}/logos/feri-logo.png`} alt="FERI — Univerza v Mariboru" />
-      </a>
-
-      <div class="header-right">
+      <div class="header-left">
 
         <a href={localePath(lang, "/")} class="brand-link">
           <span class="brand-name">{lang === "sl" ? "Inštitut za Informatiko" : "Institute of Informatics"}</span>
@@ -97,6 +107,12 @@ const resolvedSidebarTitle = getSidebarTitle();
         </nav>
 
       </div>
+
+      <a href={localePath(lang, "/")} class="logo-group">
+        <img src={`${base}/logos/ii-logo.png`} alt="Inštitut za Informatiko"
+            onerror="this.style.display='none'" />
+        <img src={`${base}/logos/feri-logo.png`} alt="FERI — Univerza v Mariboru" />
+      </a>
     </div>
   </header>
 
@@ -109,11 +125,7 @@ const resolvedSidebarTitle = getSidebarTitle();
       <aside class="sidebar">
         <div class="sidebar-header">{resolvedSidebarTitle}</div>
         {sidebarLinks.map(link => {
-          const currentPath = decodeURIComponent(Astro.url.pathname);
-          const isCurrentPage = currentPath === link.href;
-          const isChildActive = link.children &&
-            link.children.some(c => currentPath === decodeURIComponent(c.href));
-          const isOpen = isCurrentPage || isChildActive;
+          const isOpen = isSidebarLinkActive(link, currentPath);
           return (
             <div>
               <a href={link.href} class={isOpen ? "active" : ""}>{link.label}</a>
@@ -121,7 +133,7 @@ const resolvedSidebarTitle = getSidebarTitle();
                 <div class="sidebar-children">
                   {link.children.map(child => (
                     <a href={child.href}
-                       class={`sidebar-child${currentPath === decodeURIComponent(child.href) ? " active-child" : ""}`}>
+                       class={`sidebar-child${child.sidebarLevel === "tertiary" ? " sidebar-child-tertiary" : ""}${currentPath === decodeURIComponent(child.href) ? " active-child" : ""}`}>
                       {child.label}
                     </a>
                   ))}

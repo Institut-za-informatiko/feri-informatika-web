@@ -87,10 +87,14 @@ const slides = [
     <button class="hero-carousel-arrow hero-carousel-next" aria-label="Next slide">›</button>
 
     <div class="hero-carousel-track" id="hero-track">
-      {slides.map(s => (
+      {slides.map((s, i) => (
         <div class="hero-slide">
           <div class="hero-slide-text">
-            <h1 class="hero-slide-title">{s.title}</h1>
+            {i === 0 ? (
+              <h1 class="hero-slide-title">{s.title}</h1>
+            ) : (
+              <h2 class="hero-slide-title">{s.title}</h2>
+            )}
             <p class="hero-slide-subtitle">{s.subtitle}</p>
           </div>
           <div class="hero-slide-image" style={`background-image: url(${s.image});`}></div>
@@ -110,7 +114,7 @@ const slides = [
 
     {highlightedNews.length > 0 && (
       <div style="margin-top:1.25rem;">
-        <div class="section-heading"><h3>{t("home.highlightedNews")}</h3></div>
+        <div class="section-heading"><h2>{t("home.highlightedNews")}</h2></div>
         <div class="card-grid">
           {highlightedNews.map(n => (
             <a href={localePath(lang, `/news/${n.id}`)} class="grid-card">
@@ -140,7 +144,7 @@ const slides = [
 
     {highlightedAchievements.length > 0 && (
       <div style="margin-top:1.25rem;">
-        <div class="section-heading"><h3>{t("home.highlightedAchievements")}</h3></div>
+        <div class="section-heading"><h2>{t("home.highlightedAchievements")}</h2></div>
         <div class="card-grid">
           {highlightedAchievements.map(a => (
             <a href={localePath(lang, `/achievements/${a.id}`)} class="grid-card">
@@ -175,7 +179,7 @@ const slides = [
 
     {highlightedProjects.length > 0 && (
       <div style="margin-top:1.25rem;">
-        <div class="section-heading"><h3>{t("home.highlightedProjects")}</h3></div>
+        <div class="section-heading"><h2>{t("home.highlightedProjects")}</h2></div>
         <div class="card-grid">
           {highlightedProjects.map(p => (
             <a href={localePath(lang, `/research/projects/${p.id}`)} class="project-card">
