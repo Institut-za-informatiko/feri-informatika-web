@@ -10,7 +10,15 @@ const base = import.meta.env.BASE_URL;
 const sidebarLinks = [
   { label: "Laboratoriji",      href: `${base}/laboratories` },
   { label: "Interesne skupine", href: `${base}/interest-groups` },
-  { label: "Osebje",            href: `${base}/staff` },
+  {
+    label: "Osebje",
+    href: `${base}/staff`,
+    children: staff.map(p => ({
+      label: p.data.name,
+      href: `${base}/staff/${p.id}`,
+      sidebarLevel: "tertiary",
+    })),
+  },
 ];
 
 const sections = [

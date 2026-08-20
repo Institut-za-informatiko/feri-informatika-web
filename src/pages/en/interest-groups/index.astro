@@ -12,7 +12,15 @@ const groups = await getCollection("interestGroups");
 
 const sidebarLinks = [
   { label: t("about.sidebar.labs"),   href: localePath(lang, "/laboratories") },
-  { label: t("about.sidebar.groups"), href: localePath(lang, "/interest-groups") },
+  {
+    label: t("about.sidebar.groups"),
+    href: localePath(lang, "/interest-groups"),
+    children: groups.map(g => ({
+      label: g.data.name,
+      href: localePath(lang, `/interest-groups/${g.id}`),
+      sidebarLevel: "tertiary",
+    })),
+  },
   { label: t("about.sidebar.staff"),  href: localePath(lang, "/staff") },
 ];
 ---

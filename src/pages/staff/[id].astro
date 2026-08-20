@@ -23,6 +23,7 @@ const sidebarLinks = [
     children: allStaff.map(p => ({
       label: p.data.name,
       href: `${base}/staff/${p.id}`,
+      sidebarLevel: "tertiary",
     })),
   },
 ];

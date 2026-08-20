@@ -24,6 +24,7 @@ const sidebarLinks = [
     children: allLabs.map(l => ({
       label: l.data.name,
       href: `${base}/laboratories/${l.id}`,
+      sidebarLevel: "tertiary",
     })),
   },
   { label: "Interesne skupine", href: `${base}/interest-groups` },

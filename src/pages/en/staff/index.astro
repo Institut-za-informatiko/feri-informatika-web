@@ -14,7 +14,15 @@ const staff = await getCollection("staff");
 const sidebarLinks = [
   { label: t("about.sidebar.labs"),   href: localePath(lang, "/laboratories") },
   { label: t("about.sidebar.groups"), href: localePath(lang, "/interest-groups") },
-  { label: t("about.sidebar.staff"),  href: localePath(lang, "/staff") },
+  {
+    label: t("about.sidebar.staff"),
+    href: localePath(lang, "/staff"),
+    children: staff.map(p => ({
+      label: p.data.name,
+      href: localePath(lang, `/staff/${p.id}`),
+      sidebarLevel: "tertiary",
+    })),
+  },
 ];
 
 const sections = [

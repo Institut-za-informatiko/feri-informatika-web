@@ -7,7 +7,15 @@ const labs = await getCollection("laboratories");
 const base = import.meta.env.BASE_URL;
 
 const sidebarLinks = [
-  { label: "Laboratoriji",    href: `${base}/laboratories` },
+  {
+    label: "Laboratoriji",
+    href: `${base}/laboratories`,
+    children: labs.map(lab => ({
+      label: lab.data.name,
+      href: `${base}/laboratories/${lab.id}`,
+      sidebarLevel: "tertiary",
+    })),
+  },
   { label: "Interesne skupine", href: `${base}/interest-groups` },
   { label: "Osebje",           href: `${base}/staff` },
 ];

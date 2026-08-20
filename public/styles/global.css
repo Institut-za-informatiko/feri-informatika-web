@@ -197,7 +197,8 @@ h1, h2, h3, h4, h5, h6 {
   border-bottom: 1px solid var(--border);
   transition: background .15s, color .15s, padding .15s;
 }
-.sidebar > div:last-child a { border-bottom: none; }
+.sidebar > div:last-child > a { border-bottom: none; }
+.sidebar > div:last-child .sidebar-child:last-child { border-bottom: none; }
 .sidebar a:hover { background: var(--um-blue-light); color: var(--um-blue); }
 .sidebar a.active {
   background: var(--um-blue-light);
@@ -221,7 +222,7 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--um-blue-light);
 }
 .sidebar-child.sidebar-child-tertiary {
-  padding: 0.5rem 1rem 0.5rem 1.5rem;
+  padding: 0.5rem 1rem 0.5rem 1.7rem;
 }
 .sidebar-child.sidebar-child-tertiary:hover {
   color: var(--um-blue);

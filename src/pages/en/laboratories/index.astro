@@ -11,7 +11,15 @@ const t = useTranslations(lang);
 const labs = await getCollection("laboratories");
 
 const sidebarLinks = [
-  { label: t("about.sidebar.labs"),   href: localePath(lang, "/laboratories") },
+  {
+    label: t("about.sidebar.labs"),
+    href: localePath(lang, "/laboratories"),
+    children: labs.map(lab => ({
+      label: lab.data.name,
+      href: localePath(lang, `/laboratories/${lab.id}`),
+      sidebarLevel: "tertiary",
+    })),
+  },
   { label: t("about.sidebar.groups"), href: localePath(lang, "/interest-groups") },
   { label: t("about.sidebar.staff"),  href: localePath(lang, "/staff") },
 ];

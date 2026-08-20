@@ -12,7 +12,15 @@ const projects = await getCollection("studentProjects");
 
 const sidebarLinks = [
   { label: "Study Programmes",   href: localePath(lang, "/studies/programmes") },
-  { label: "Student Activities", href: localePath(lang, "/studies/student-projects") },
+  {
+    label: "Student Activities",
+    href: localePath(lang, "/studies/student-projects"),
+    children: projects.map(p => ({
+      label: p.data.title,
+      href: localePath(lang, `/studies/student-projects/${p.id}`),
+      sidebarLevel: "tertiary",
+    })),
+  },
 ];
 ---
 <Base title="Student Activities" lang={lang} sidebarLinks={sidebarLinks}>

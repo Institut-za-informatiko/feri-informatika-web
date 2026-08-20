@@ -15,16 +15,17 @@ const base = import.meta.env.BASE_URL;
 const allGroups = await getCollection("interestGroups");
 
 const sidebarLinks = [
-  { label: "Laboratories", href: `${base}/laboratories` },
+  { label: "Laboratoriji", href: `${base}/laboratories` },
   {
-    label: "Interest Groups",
+    label: "Interesne skupine",
     href: `${base}/interest-groups`,
     children: allGroups.map(g => ({
       label: g.data.name,
       href: `${base}/interest-groups/${g.id}`,
+      sidebarLevel: "tertiary",
     })),
   },
-  { label: "Staff", href: `${base}/staff` },
+  { label: "Osebje", href: `${base}/staff` },
 ];
 ---
 <Base title={group.data.name} sidebarLinks={sidebarLinks}>
@@ -38,14 +39,14 @@ const sidebarLinks = [
 
     {group.data.body && (
       <div>
-        <div class="section-heading"><h3>About the Group</h3></div>
+        <div class="section-heading"><h3>O skupini</h3></div>
         <div class="prose"><Content /></div>
       </div>
     )}
 
     {group.data.url && (
       <div class="external-link">
-        <a href={group.data.url} target="_blank">Group website →</a>
+        <a href={group.data.url} target="_blank">Spletna stran skupine →</a>
       </div>
     )}
 

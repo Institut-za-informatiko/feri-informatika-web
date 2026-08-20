@@ -8,7 +8,15 @@ const projects = await getCollection("studentProjects");
 
 const sidebarLinks = [
   { label: "Študijski programi",   href: `${base}/studies/programmes` },
-  { label: "Študentske dejavnosti", href: `${base}/studies/student-projects` },
+  {
+    label: "Študentske dejavnosti",
+    href: `${base}/studies/student-projects`,
+    children: projects.map(p => ({
+      label: p.data.title,
+      href: `${base}/studies/student-projects/${p.id}`,
+      sidebarLevel: "tertiary",
+    })),
+  },
 ];
 ---
 <Base title="Študentske dejavnosti" sidebarLinks={sidebarLinks}>
