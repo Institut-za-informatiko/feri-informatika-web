@@ -110,47 +110,6 @@ const galleryImages = achievement.data.images ?? [];
 
 </Base>
 
-<style>
-  .gallery-masonry { columns: 3; column-gap: 0.75rem; }
-  @media (max-width: 768px) { .gallery-masonry { columns: 2; } }
-  @media (max-width: 480px) { .gallery-masonry { columns: 1; } }
-  .gallery-thumb {
-    display: block; width: 100%;
-    border: 1px solid var(--border); border-radius: 4px;
-    overflow: hidden; background: var(--um-blue-light);
-    cursor: pointer; padding: 0;
-    transition: border-color .15s, transform .15s;
-    margin-bottom: 0.75rem; break-inside: avoid;
-  }
-  .gallery-thumb img { width: 100%; height: auto; display: block; object-fit: contain; }
-  .gallery-thumb:hover { border-color: var(--um-blue); transform: scale(1.02); }
-  .lightbox {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.92);
-    z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 2rem;
-  }
-  .lightbox[hidden] { display: none; }
-  .lightbox-img { max-width: 90vw; max-height: 85vh; object-fit: contain; user-select: none; }
-  .lightbox-close, .lightbox-prev, .lightbox-next {
-    position: absolute; background: rgba(255,255,255,0.1); color: #fff;
-    border: 1px solid rgba(255,255,255,0.3); font-size: 2rem; cursor: pointer;
-    width: 48px; height: 48px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    transition: background .15s; line-height: 1;
-  }
-  .lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover { background: rgba(255,199,15,0.4); }
-  .lightbox-close { top: 1.5rem; right: 1.5rem; }
-  .lightbox-prev { left: 1.5rem; top: 50%; transform: translateY(-50%); }
-  .lightbox-next { right: 1.5rem; top: 50%; transform: translateY(-50%); }
-  .lightbox-counter {
-    position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
-    color: rgba(255,255,255,0.7); font-size: 0.85rem;
-    font-family: 'Titillium Web', sans-serif; letter-spacing: 0.1em;
-  }
-  @media (max-width: 560px) { .lightbox-prev { left: 0.5rem; } .lightbox-next { right: 0.5rem; } }
-  .prose { overflow-wrap: break-word; word-break: break-word; max-width: 100%; }
-  .prose * { max-width: 100%; }
-</style>
-
 <script>
   const lightbox  = document.getElementById("lightbox") as HTMLElement | null;
   const lbImg     = document.querySelector(".lightbox-img") as HTMLImageElement | null;
