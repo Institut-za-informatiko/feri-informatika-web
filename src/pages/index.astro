@@ -57,9 +57,9 @@ const allNews         = await getCollection("news");
 const allAchievements = await getCollection("achievements");
 const allProjects     = await getCollection("projects");
 
-const highlightedNews         = findById(allNews, highlightedNewsIds).slice(0, 3);
+const highlightedNews         = findById(allNews, highlightedNewsIds).slice(0, 5);
 const highlightedAchievements = findById(allAchievements, highlightedAchievementsIds).slice(0, 3);
-const highlightedProjects     = findById(allProjects, highlightedProjectsIds).slice(0, 3);
+const highlightedProjects     = findById(allProjects, highlightedProjectsIds).slice(0, 5);
 
 const slides = slidesRaw.map(s => ({
   title: s.data.title,
@@ -74,10 +74,14 @@ const slides = slidesRaw.map(s => ({
     <button class="hero-carousel-arrow hero-carousel-next" aria-label="Next slide">›</button>
 
     <div class="hero-carousel-track" id="hero-track">
-      {slides.map(s => (
+      {slides.map((s, i) => (
         <div class="hero-slide">
           <div class="hero-slide-text">
-            <h1 class="hero-slide-title">{s.title}</h1>
+            {i === 0 ? (
+              <h1 class="hero-slide-title">{s.title}</h1>
+            ) : (
+              <h2 class="hero-slide-title">{s.title}</h2>
+            )}
             <p class="hero-slide-subtitle">{s.subtitle}</p>
           </div>
           <div class="hero-slide-image" style={`background-image: url(${s.image});`}></div>
@@ -94,12 +98,10 @@ const slides = slidesRaw.map(s => ({
 
   <div class="home-section">
 
-    <h1 class="page-title">Inštitut za Informatiko</h1>
-    <div class="page-title-rule"></div>
 
   {highlightedNews.length > 0 && (
-    <div class="card" style="margin-top:1.25rem;">
-      <div class="section-heading"><h3>Izpostavljene novice</h3></div>
+    <div style="margin-top:2rem;">
+      <div class="section-heading"><h2>Izpostavljene novice</h2></div>
       <div class="card-grid">
         {highlightedNews.map(n => (
           <a href={`${base}/news/${n.id}`} class="grid-card">
@@ -128,8 +130,8 @@ const slides = slidesRaw.map(s => ({
   )}
 
   {highlightedAchievements.length > 0 && (
-    <div class="card" style="margin-top:1.25rem;">
-      <div class="section-heading"><h3>Izpostavljene dosežke</h3></div>
+    <div style="margin-top:2rem;">
+      <div class="section-heading"><h2>Izpostavljeni dosežki</h2></div>
       <div class="card-grid">
         {highlightedAchievements.map(a => (
           <a href={`${base}/achievements/${a.id}`} class="grid-card">
@@ -150,7 +152,7 @@ const slides = slidesRaw.map(s => ({
               </time>
               <h3 class="grid-card-title">{a.data.title}</h3>
               {a.data.subtitle && (
-                <p style="font-size:0.78rem; color:var(--muted); font-style:italic; margin:0 0 0.4rem;">
+                <p  class="grid-card-summary">
                   {a.data.subtitle}
                 </p>
               )}
@@ -163,8 +165,8 @@ const slides = slidesRaw.map(s => ({
   )}
 
   {highlightedProjects.length > 0 && (
-    <div class="card" style="margin-top:1.25rem;">
-      <div class="section-heading"><h3>Izpostavljeni projekti</h3></div>
+    <div style="margin-top:2rem;">
+      <div class="section-heading"><h2>Izpostavljeni projekti</h2></div>
       <div class="card-grid">
         {highlightedProjects.map(p => (
           <a href={`${base}/research/projects/${p.id}`} class="project-card">
@@ -172,7 +174,7 @@ const slides = slidesRaw.map(s => ({
               {p.data.status === "active" ? "Aktivno" : "Zaključeno"}
             </div>
             <h3 class="project-card-title">{p.data.title}</h3>
-            <p class="project-card-desc">{p.data.description}</p>
+            <p class="project-card-desc, grid-card-summary">{p.data.description}</p>
             <p class="project-card-year">
               {p.data.startYear}
               {p.data.endYear ? `–${p.data.endYear}` : p.data.status === "active" ? "-sedanjost" : ""}

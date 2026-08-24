@@ -24,6 +24,7 @@ const sidebarLinks = [
     children: allProgrammes.map(p => ({
       label: p.data.title,
       href: localePath(lang, `/studies/programmes/${p.id}`),
+      sidebarLevel: "tertiary",
     })),
   },
   { label: "Student Activities", href: localePath(lang, "/studies/student-projects") },

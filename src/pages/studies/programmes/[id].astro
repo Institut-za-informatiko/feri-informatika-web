@@ -21,6 +21,7 @@ const sidebarLinks = [
     children: allProgrammes.map(p => ({
       label: p.data.title,
       href: `${base}/studies/programmes/${p.id}`,
+      sidebarLevel: "tertiary",
     })),
   },
   { label: "Študentske dejavnosti", href: `${base}/studies/student-projects` },

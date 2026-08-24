@@ -11,7 +11,15 @@ const t = useTranslations(lang);
 const programmes = await getCollection("studyProgrammes");
 
 const sidebarLinks = [
-  { label: "Study Programmes",   href: localePath(lang, "/studies/programmes") },
+  {
+    label: "Study Programmes",
+    href: localePath(lang, "/studies/programmes"),
+    children: programmes.map(p => ({
+      label: p.data.title,
+      href: localePath(lang, `/studies/programmes/${p.id}`),
+      sidebarLevel: "tertiary",
+    })),
+  },
   { label: "Student Activities", href: localePath(lang, "/studies/student-projects") },
 ];
 ---

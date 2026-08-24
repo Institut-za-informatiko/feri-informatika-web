@@ -2,27 +2,67 @@
 import { getLangFromUrl, useTranslations, type Lang } from "@/i18n/translations";
 import { getAlternateUrl, getNavLinks, localePath } from "@/i18n/utils";
 
+interface SidebarLink {
+  label: string;
+  href: string;
+  children?: { label: string; href: string; sidebarLevel?: "tertiary" }[];
+}
+
 interface Props {
   title: string;
   lang?: Lang;
-  sidebarLinks?: { label: string; href: string; children?: { label: string; href: string }[] }[];
+  sidebarTitle?: string;
+  sidebarLinks?: SidebarLink[];
   fullWidth?: boolean;
   wide?: boolean;
 }
 
-const { title, sidebarLinks, fullWidth, wide } = Astro.props;
+const { title, sidebarTitle, sidebarLinks, fullWidth, wide } = Astro.props;
 const lang: Lang = Astro.props.lang ?? getLangFromUrl(Astro.url, import.meta.env.BASE_URL);
 const t = useTranslations(lang);
 const alternateUrl = getAlternateUrl(Astro.url, lang);
 const mainNav = getNavLinks(lang);
 const base = import.meta.env.BASE_URL;
+
+function getSidebarTitle(): string {
+  if (sidebarTitle) return sidebarTitle;
+
+  const sidebarPaths = getSidebarPaths(sidebarLinks ?? []);
+
+  if (sidebarPaths.some(path => path.includes('/research/'))) return t('research.title');
+  if (sidebarPaths.some(path => path.includes('/studies/'))) return t('studies.title');
+  if (sidebarPaths.some(path => path.includes('/conferences'))) return t('conferences.title');
+  if (sidebarPaths.some(path => path.includes('/industry'))) return t('industry.title');
+  if (sidebarPaths.some(path =>
+    path.includes('/laboratories') ||
+    path.includes('/interest-groups') ||
+    path.includes('/staff')
+  )) return t('about.title');
+
+  return title;
+}
+
+function getSidebarPaths(links: SidebarLink[]): string[] {
+  return links.flatMap(link => [
+    link.href,
+    ...(link.children ?? []).map(child => child.href),
+  ]);
+}
+
+function isSidebarLinkActive(link: SidebarLink, currentPath: string): boolean {
+  return currentPath === decodeURIComponent(link.href) ||
+    (link.children ?? []).some(child => currentPath === decodeURIComponent(child.href));
+}
+
+const resolvedSidebarTitle = getSidebarTitle();
+const currentPath = decodeURIComponent(Astro.url.pathname);
 ---
 <!doctype html>
 <html lang={lang}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href={`${base}/styles/global.css`} />
   <title>{title} — Institute of Informatics FERI</title>
 </head>
@@ -33,13 +73,7 @@ const base = import.meta.env.BASE_URL;
   <header class="site-header">
     <div class="header-inner">
 
-      <a href={localePath(lang, "/")} class="logo-group">
-        <img src={`${base}/logos/ii-logo.png`} alt="Inštitut za Informatiko"
-            onerror="this.style.display='none'" />
-        <img src={`${base}/logos/feri-logo.png`} alt="FERI — Univerza v Mariboru" />
-      </a>
-
-      <div class="header-right">
+      <div class="header-left">
 
         <a href={localePath(lang, "/")} class="brand-link">
           <span class="brand-name">{lang === "sl" ? "Inštitut za Informatiko" : "Institute of Informatics"}</span>
@@ -73,6 +107,12 @@ const base = import.meta.env.BASE_URL;
         </nav>
 
       </div>
+
+      <a href={localePath(lang, "/")} class="logo-group">
+        <img src={`${base}/logos/ii-logo.png`} alt="Inštitut za Informatiko"
+            onerror="this.style.display='none'" />
+        <img src={`${base}/logos/feri-logo.png`} alt="FERI — Univerza v Mariboru" />
+      </a>
     </div>
   </header>
 
@@ -83,13 +123,9 @@ const base = import.meta.env.BASE_URL;
 
     {sidebarLinks && sidebarLinks.length > 0 && (
       <aside class="sidebar">
-        <div class="sidebar-header">{lang === "sl" ? "Oddelek" : "Section"}</div>
+        <div class="sidebar-header">{resolvedSidebarTitle}</div>
         {sidebarLinks.map(link => {
-          const currentPath = decodeURIComponent(Astro.url.pathname);
-          const isCurrentPage = currentPath === link.href;
-          const isChildActive = link.children &&
-            link.children.some(c => currentPath === decodeURIComponent(c.href));
-          const isOpen = isCurrentPage || isChildActive;
+          const isOpen = isSidebarLinkActive(link, currentPath);
           return (
             <div>
               <a href={link.href} class={isOpen ? "active" : ""}>{link.label}</a>
@@ -97,7 +133,7 @@ const base = import.meta.env.BASE_URL;
                 <div class="sidebar-children">
                   {link.children.map(child => (
                     <a href={child.href}
-                       class={`sidebar-child${currentPath === decodeURIComponent(child.href) ? " active-child" : ""}`}>
+                       class={`sidebar-child${child.sidebarLevel === "tertiary" ? " sidebar-child-tertiary" : ""}${currentPath === decodeURIComponent(child.href) ? " active-child" : ""}`}>
                       {child.label}
                     </a>
                   ))}
@@ -115,6 +151,17 @@ const base = import.meta.env.BASE_URL;
 
   </div>
 )}
+
+<script>
+  const siteHeader = document.querySelector<HTMLElement>(".site-header");
+
+  function updateHeaderScrollState() {
+    siteHeader?.classList.toggle("is-scrolled", window.scrollY > 0);
+  }
+
+  updateHeaderScrollState();
+  window.addEventListener("scroll", updateHeaderScrollState, { passive: true });
+</script>
 
 </body>
 </html>

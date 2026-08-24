@@ -14,7 +14,15 @@ const past   = all.filter(p => p.data.status === "past");
 
 const sidebarLinks = [
   { label: t("research.sidebar.researchGroup"), href: localePath(lang, "/research/group") },
-  { label: t("research.sidebar.projects"),     href: localePath(lang, "/research/projects") },
+  {
+    label: t("research.sidebar.projects"),
+    href: localePath(lang, "/research/projects"),
+    children: all.map(p => ({
+      label: p.data.title,
+      href: localePath(lang, `/research/projects/${p.id}`),
+      sidebarLevel: "tertiary",
+    })),
+  },
   { label: t("research.sidebar.publications"), href: localePath(lang, "/research/publications") },
   { label: t("research.sidebar.ethics"),       href: localePath(lang, "/research/ethics") },
 ];

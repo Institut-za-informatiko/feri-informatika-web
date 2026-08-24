@@ -7,7 +7,15 @@ const base = import.meta.env.BASE_URL;
 const programmes = await getCollection("studyProgrammes");
 
 const sidebarLinks = [
-  { label: "Študijski programi",   href: `${base}/studies/programmes` },
+  {
+    label: "Študijski programi",
+    href: `${base}/studies/programmes`,
+    children: programmes.map(p => ({
+      label: p.data.title,
+      href: `${base}/studies/programmes/${p.id}`,
+      sidebarLevel: "tertiary",
+    })),
+  },
   { label: "Študentske dejavnosti", href: `${base}/studies/student-projects` },
 ];
 ---

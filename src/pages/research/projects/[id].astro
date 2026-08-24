@@ -22,6 +22,7 @@ const sidebarLinks = [
     children: allProjects.map(p => ({
       label: p.data.title,
       href: `${base}/research/projects/${p.id}`,
+      sidebarLevel: "tertiary",
     })),
   },
   { label: "Publikacije",     href: `${base}/research/publications` },

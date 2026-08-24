@@ -1,6 +1,31 @@
 import { defineConfig } from 'astro/config';
 import sveltia from 'astro-loader-sveltia-cms';
 
+function repoFullReloadPlugin() {
+  const ignoredPathParts = ['/.git/', '/node_modules/', '/dist/', '/.astro/'];
+  let reloadTimer;
+
+  return {
+    name: 'repo-full-reload',
+    apply: 'serve',
+    configureServer(server) {
+      server.watcher.add(process.cwd());
+      server.watcher.on('all', (_event, file) => {
+        const normalizedFile = file.replaceAll('\\', '/');
+
+        if (ignoredPathParts.some((part) => normalizedFile.includes(part))) {
+          return;
+        }
+
+        clearTimeout(reloadTimer);
+        reloadTimer = setTimeout(() => {
+          server.ws.send({ type: 'full-reload' });
+        }, 75);
+      });
+    },
+  };
+}
+
 export default defineConfig({
   site: 'https://institut-za-informatiko.github.io',
   base: '/feri-informatika-web',
@@ -12,6 +37,7 @@ export default defineConfig({
     },
   },
   vite: {
+    plugins: [repoFullReloadPlugin()],
     resolve: {
       alias: {
         '@': '/src',

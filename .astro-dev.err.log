@@ -1,0 +1,242 @@
+$ astro dev "--" "--host" "127.0.0.1"
+X [ERROR] Cannot read directory "../..": Access is denied.
+
+X [ERROR] Could not resolve "./AXObjectElementMap"
+
+    node_modules/.pnpm/axobject-query@4.1.0/node_modules/axobject-query/lib/index.js:7:57:
+      7 │ ...ementMap = _interopRequireDefault(require("./AXObjectElementMap"));
+        ╵                                              ~~~~~~~~~~~~~~~~~~~~~~
+
+X [ERROR] Could not resolve "./AXObjectRoleMap"
+
+    node_modules/.pnpm/axobject-query@4.1.0/node_modules/axobject-query/lib/index.js:8:54:
+      8 │ ...jectRoleMap = _interopRequireDefault(require("./AXObjectRoleMap"));
+        ╵                                                 ~~~~~~~~~~~~~~~~~~~
+
+X [ERROR] Could not resolve "./ariaPropsMap"
+
+    node_modules/.pnpm/aria-query@5.3.2/node_modules/aria-query/lib/index.js:7:51:
+      7 │ var _ariaPropsMap = _interopRequireDefault(require("./ariaPropsMap"));
+        ╵                                                    ~~~~~~~~~~~~~~~~
+
+X [ERROR] Could not resolve "./helpers.js"
+
+    node_modules/.pnpm/astro@6.4.8_@types+node@25.9.4_rollup@4.62.2/node_modules/astro/dist/runtime/client/dev-toolbar/entrypoint.js:2:38:
+      2 │ import { ToolbarAppEventTarget } from "./helpers.js";
+        ╵                                       ~~~~~~~~~~~~~~
+
+X [ERROR] Could not resolve "./AXObjectsMap"
+
+    node_modules/.pnpm/axobject-query@4.1.0/node_modules/axobject-query/lib/index.js:9:51:
+      9 │ var _AXObjectsMap = _interopRequireDefault(require("./AXObjectsMap"));
+        ╵                                                    ~~~~~~~~~~~~~~~~
+
+X [ERROR] Could not resolve "./domMap"
+
+    node_modules/.pnpm/aria-query@5.3.2/node_modules/aria-query/lib/index.js:8:45:
+      8 │ var _domMap = _interopRequireDefault(require("./domMap"));
+        ╵                                              ~~~~~~~~~~
+
+X [ERROR] Could not resolve "./settings.js"
+
+    node_modules/.pnpm/astro@6.4.8_@types+node@25.9.4_rollup@4.62.2/node_modules/astro/dist/runtime/client/dev-toolbar/entrypoint.js:3:25:
+      3 │ import { settings } from "./settings.js";
+        ╵                          ~~~~~~~~~~~~~~~
+
+X [ERROR] Could not resolve "./elementAXObjectMap"
+
+    node_modules/.pnpm/axobject-query@4.1.0/node_modules/axobject-query/lib/index.js:10:57:
+      10 │ ...jectMap = _interopRequireDefault(require("./elementAXObjectMap"));
+         ╵                                             ~~~~~~~~~~~~~~~~~~~~~~
+
+X [ERROR] Could not resolve "./rolesMap"
+
+    node_modules/.pnpm/aria-query@5.3.2/node_modules/aria-query/lib/index.js:9:47:
+      9 │ var _rolesMap = _interopRequireDefault(require("./rolesMap"));
+        ╵                                                ~~~~~~~~~~~~
+
+X [ERROR] Could not resolve "./apps/astro.js"
+
+    node_modules/.pnpm/astro@6.4.8_@types+node@25.9.4_rollup@4.62.2/node_modules/astro/dist/runtime/client/dev-toolbar/entrypoint.js:27:11:
+      27 │     import("./apps/astro.js"),
+         ╵            ~~~~~~~~~~~~~~~~~
+
+X [ERROR] Could not resolve "./elementRoleMap"
+
+    node_modules/.pnpm/aria-query@5.3.2/node_modules/aria-query/lib/index.js:10:53:
+      10 │ ...mentRoleMap = _interopRequireDefault(require("./elementRoleMap"));
+         ╵                                                 ~~~~~~~~~~~~~~~~~~
+
+X [ERROR] Could not resolve "./apps/audit/index.js"
+
+    node_modules/.pnpm/astro@6.4.8_@types+node@25.9.4_rollup@4.62.2/node_modules/astro/dist/runtime/client/dev-toolbar/entrypoint.js:28:11:
+      28 │     import("./apps/audit/index.js"),
+         ╵            ~~~~~~~~~~~~~~~~~~~~~~~
+
+X [ERROR] Could not resolve "./roleElementMap"
+
+    node_modules/.pnpm/aria-query@5.3.2/node_modules/aria-query/lib/index.js:11:53:
+      11 │ ...eElementMap = _interopRequireDefault(require("./roleElementMap"));
+         ╵                                                 ~~~~~~~~~~~~~~~~~~
+
+X [ERROR] Could not resolve "./apps/xray.js"
+
+    node_modules/.pnpm/astro@6.4.8_@types+node@25.9.4_rollup@4.62.2/node_modules/astro/dist/runtime/client/dev-toolbar/entrypoint.js:29:11:
+      29 │     import("./apps/xray.js"),
+         ╵            ~~~~~~~~~~~~~~~~
+
+X [ERROR] Could not resolve "./apps/settings.js"
+
+    node_modules/.pnpm/astro@6.4.8_@types+node@25.9.4_rollup@4.62.2/node_modules/astro/dist/runtime/client/dev-toolbar/entrypoint.js:30:11:
+      30 │     import("./apps/settings.js"),
+         ╵            ~~~~~~~~~~~~~~~~~~~~
+
+X [ERROR] Could not resolve "./toolbar.js"
+
+    node_modules/.pnpm/astro@6.4.8_@types+node@25.9.4_rollup@4.62.2/node_modules/astro/dist/runtime/client/dev-toolbar/entrypoint.js:31:11:
+      31 │     import("./toolbar.js"),
+         ╵            ~~~~~~~~~~~~~~
+
+X [ERROR] Could not resolve "./ui-library/index.js"
+
+    node_modules/.pnpm/astro@6.4.8_@types+node@25.9.4_rollup@4.62.2/node_modules/astro/dist/runtime/client/dev-toolbar/entrypoint.js:32:11:
+      32 │     import("./ui-library/index.js")
+         ╵            ~~~~~~~~~~~~~~~~~~~~~~~
+
+[31m[1m14:59:37[22m [ERROR][39m [31m[UnhandledRejection][39m Astro detected an unhandled rejection. Here's the stack trace:
+Error: Error during dependency optimization:
+
+X [ERROR] Cannot read directory "../..": Access is denied.
+
+
+X [ERROR] Could not resolve "./ariaPropsMap"
+
+    node_modules/.pnpm/aria-query@5.3.2/node_modules/aria-query/lib/index.js:7:51:
+      7 │ var _ariaPropsMap = _interopRequireDefault(require("./ariaPropsMap"));
+        ╵                                                    ~~~~~~~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "./domMap"
+
+    node_modules/.pnpm/aria-query@5.3.2/node_modules/aria-query/lib/index.js:8:45:
+      8 │ var _domMap = _interopRequireDefault(require("./domMap"));
+        ╵                                              ~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "./rolesMap"
+
+    node_modules/.pnpm/aria-query@5.3.2/node_modules/aria-query/lib/index.js:9:47:
+      9 │ var _rolesMap = _interopRequireDefault(require("./rolesMap"));
+        ╵                                                ~~~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "./elementRoleMap"
+
+    node_modules/.pnpm/aria-query@5.3.2/node_modules/aria-query/lib/index.js:10:53:
+      10 │ ...mentRoleMap = _interopRequireDefault(require("./elementRoleMap"));
+         ╵                                                 ~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "./roleElementMap"
+
+    node_modules/.pnpm/aria-query@5.3.2/node_modules/aria-query/lib/index.js:11:53:
+      11 │ ...eElementMap = _interopRequireDefault(require("./roleElementMap"));
+         ╵                                                 ~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "./helpers.js"
+
+    node_modules/.pnpm/astro@6.4.8_@types+node@25.9.4_rollup@4.62.2/node_modules/astro/dist/runtime/client/dev-toolbar/entrypoint.js:2:38:
+      2 │ import { ToolbarAppEventTarget } from "./helpers.js";
+        ╵                                       ~~~~~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "./settings.js"
+
+    node_modules/.pnpm/astro@6.4.8_@types+node@25.9.4_rollup@4.62.2/node_modules/astro/dist/runtime/client/dev-toolbar/entrypoint.js:3:25:
+      3 │ import { settings } from "./settings.js";
+        ╵                          ~~~~~~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "./apps/astro.js"
+
+    node_modules/.pnpm/astro@6.4.8_@types+node@25.9.4_rollup@4.62.2/node_modules/astro/dist/runtime/client/dev-toolbar/entrypoint.js:27:11:
+      27 │     import("./apps/astro.js"),
+         ╵            ~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "./apps/audit/index.js"
+
+    node_modules/.pnpm/astro@6.4.8_@types+node@25.9.4_rollup@4.62.2/node_modules/astro/dist/runtime/client/dev-toolbar/entrypoint.js:28:11:
+      28 │     import("./apps/audit/index.js"),
+         ╵            ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "./apps/xray.js"
+
+    node_modules/.pnpm/astro@6.4.8_@types+node@25.9.4_rollup@4.62.2/node_modules/astro/dist/runtime/client/dev-toolbar/entrypoint.js:29:11:
+      29 │     import("./apps/xray.js"),
+         ╵            ~~~~~~~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "./apps/settings.js"
+
+    node_modules/.pnpm/astro@6.4.8_@types+node@25.9.4_rollup@4.62.2/node_modules/astro/dist/runtime/client/dev-toolbar/entrypoint.js:30:11:
+      30 │     import("./apps/settings.js"),
+         ╵            ~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "./toolbar.js"
+
+    node_modules/.pnpm/astro@6.4.8_@types+node@25.9.4_rollup@4.62.2/node_modules/astro/dist/runtime/client/dev-toolbar/entrypoint.js:31:11:
+      31 │     import("./toolbar.js"),
+         ╵            ~~~~~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "./ui-library/index.js"
+
+    node_modules/.pnpm/astro@6.4.8_@types+node@25.9.4_rollup@4.62.2/node_modules/astro/dist/runtime/client/dev-toolbar/entrypoint.js:32:11:
+      32 │     import("./ui-library/index.js")
+         ╵            ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "./AXObjectElementMap"
+
+    node_modules/.pnpm/axobject-query@4.1.0/node_modules/axobject-query/lib/index.js:7:57:
+      7 │ ...ementMap = _interopRequireDefault(require("./AXObjectElementMap"));
+        ╵                                              ~~~~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "./AXObjectRoleMap"
+
+    node_modules/.pnpm/axobject-query@4.1.0/node_modules/axobject-query/lib/index.js:8:54:
+      8 │ ...jectRoleMap = _interopRequireDefault(require("./AXObjectRoleMap"));
+        ╵                                                 ~~~~~~~~~~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "./AXObjectsMap"
+
+    node_modules/.pnpm/axobject-query@4.1.0/node_modules/axobject-query/lib/index.js:9:51:
+      9 │ var _AXObjectsMap = _interopRequireDefault(require("./AXObjectsMap"));
+        ╵                                                    ~~~~~~~~~~~~~~~~
+
+
+X [ERROR] Could not resolve "./elementAXObjectMap"
+
+    node_modules/.pnpm/axobject-query@4.1.0/node_modules/axobject-query/lib/index.js:10:57:
+      10 │ ...jectMap = _interopRequireDefault(require("./elementAXObjectMap"));
+         ╵                                             ~~~~~~~~~~~~~~~~~~~~~~
+
+
+    at failureErrorWithLog (C:\Users\Sasa\Documents\feri-informatika-web\node_modules\.pnpm\esbuild@0.27.7\node_modules\esbuild\lib\main.js:1748:15)
+    at C:\Users\Sasa\Documents\feri-informatika-web\node_modules\.pnpm\esbuild@0.27.7\node_modules\esbuild\lib\main.js:1207:25
+    at C:\Users\Sasa\Documents\feri-informatika-web\node_modules\.pnpm\esbuild@0.27.7\node_modules\esbuild\lib\main.js:1626:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+  [1mHint:[22m
+[33m    Make sure your promises all have an `await` or a `.catch()` handler.[39m
+  [1mError reference:[22m
+    [36m[4mhttps://docs.astro.build/en/reference/errors/unhandled-rejection/[24m[39m
+  [1mStack trace:[22m
+[2m    at C:\Users\Sasa\Documents\feri-informatika-web\    node_modules\.pnpm\aria-query@5.3.2\node_modules\aria-query\lib\index.js::7:51
+    [...] See full stack trace in the browser, or rerun with --verbose.[22m
+[31m[1m15:33:07[22m [ERROR] [router][39m Request URLs for [1mpublic/[22m assets must also include your base. "/feri-informatika-web/favicon.ico" expected, but received "/favicon.ico".

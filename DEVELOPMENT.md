@@ -1,5 +1,9 @@
 # Development Guide — Technical Documentation
 
+## Repository Rules
+
+Automated coding agents must follow `AGENTS.md` in the repository root. The most important rule for this site is accessibility: DOM order must match visual and reading order, and semantic markup should not be replaced with CSS-only visual reordering.
+
 ##  Setup
 
 ### Requirements

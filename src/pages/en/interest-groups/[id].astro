@@ -25,6 +25,7 @@ const sidebarLinks = [
     children: allGroups.map(g => ({
       label: g.data.name,
       href: localePath(lang, `/interest-groups/${g.id}`),
+      sidebarLevel: "tertiary",
     })),
   },
   { label: t("about.sidebar.staff"), href: localePath(lang, "/staff") },

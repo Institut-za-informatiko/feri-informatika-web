@@ -51,7 +51,7 @@ const filtered = allNews
 
 {filtered.length > 0 && (
   <div class="section-news">
-    <div class="section-news-title">{resolvedLabel}</div>
+    <h2 class="section-news-title">{resolvedLabel}</h2>
     <div class="card-grid">
       {filtered.map((n: CollectionEntry<"news">) => (
         <a href={`${newsBase}/${n.id}`} class="grid-card">
