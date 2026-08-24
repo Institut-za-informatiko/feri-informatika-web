@@ -5,6 +5,10 @@
     "2026-06-02-izid-dveh-znanstvenih-monografij",
     "2026-06-17-studentje-um-feri-v-prvi-deseterici-mednarodnega-tekmovanja-"
   ],
-  "achievements": ["CONCORDIA", "gcd4fe-2-mesto", "validation-assessment-patern"],
+  "achievements": [
+    "CONCORDIA",
+    "gcd4fe-2-mesto",
+    "validation-assessment-patern"
+  ],
   "projects": ["ai-sensor-network", "smart-campus"]
 }
