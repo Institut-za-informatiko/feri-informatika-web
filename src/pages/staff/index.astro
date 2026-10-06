@@ -3,9 +3,11 @@ import Base from "../../layouts/Base.astro";
 import { Image } from "astro:assets";
 import SectionNews from "../../components/SectionNews.astro";
 import { getCollection } from "astro:content";
+import { useTranslations } from "@/i18n/translations";
 
 const staff = await getCollection("staff");
 const base = import.meta.env.BASE_URL;
+const t = useTranslations("sl");
 
 const sidebarLinks = [
   { label: "Laboratoriji",      href: `${base}/laboratories` },
@@ -43,13 +45,27 @@ function getSection(member: typeof staff[0]) {
     const members = staff.filter(p => getSection(p) === key);
     if (members.length === 0) return null;
     return (
-      <div style="margin-bottom:2rem;">
-        <h2 style="font-family:'Titillium Web',sans-serif; font-size:1.1rem; font-weight:700;
-                   color:var(--ink); margin-bottom:1rem; padding-bottom:0.4rem;
-                   border-bottom:2px solid var(--accent);">
+      <section class="staff-section">
+        <h2 class="staff-section-title">
           {label}
+          {key === "prejsnji" && (
+            <button
+              class="former-toggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="former-grid"
+              aria-label={t("staff.former.show")}
+              data-label-open={t("staff.former.hide")}
+              data-label-closed={t("staff.former.show")}
+            >
+              <span class="former-toggle-icon" aria-hidden="true"></span>
+            </button>
+          )}
         </h2>
-        <div class="staff-grid">
+        <div
+          id={key === "prejsnji" ? "former-grid" : undefined}
+          class:list={["staff-grid", { "staff-grid--hidden": key === "prejsnji" }]}
+        >
           {members.map(p => (
             <a href={`${base}/staff/${p.id}`} class="staff-card">
               <div class="staff-avatar">
@@ -66,10 +82,28 @@ function getSection(member: typeof staff[0]) {
             </a>
           ))}
         </div>
-      </div>
+      </section>
     );
   })}
 
   <SectionNews tag="student" label="Zadnje novice" />
+
+<script>
+  const btn = document.querySelector(".former-toggle");
+  const grid = document.getElementById("former-grid");
+  const icon = document.querySelector<HTMLElement>(".former-toggle-icon");
+
+  btn?.addEventListener("click", () => {
+    const open = btn.getAttribute("aria-expanded") === "true";
+    const nextOpen = !open;
+    btn.setAttribute("aria-expanded", String(nextOpen));
+    btn.setAttribute(
+      "aria-label",
+      nextOpen ? btn.dataset.labelOpen ?? "" : btn.dataset.labelClosed ?? ""
+    );
+    grid?.classList.toggle("staff-grid--hidden", !nextOpen);
+    icon?.classList.toggle("is-open", nextOpen);
+  });
+</script>
 
 </Base>

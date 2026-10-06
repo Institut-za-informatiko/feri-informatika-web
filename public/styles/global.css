@@ -691,6 +691,51 @@ tr:hover td { background: #fff9e6; }
 }
 
 /* ── STAFF GRID ── */
+.staff-section { margin-bottom: 2rem; }
+.staff-section-title {
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.former-toggle {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  width: 1rem;
+  height: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.former-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.former-toggle-icon {
+  display: block;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-right: 3px solid currentColor;
+  border-bottom: 3px solid currentColor;
+  transform: rotate(45deg) translate(-1px, -1px);
+  transform-origin: center;
+  transition: transform 0.15s;
+}
+.former-toggle-icon.is-open {
+  transform: rotate(225deg) translate(-1px, -1px);
+}
+.staff-grid--hidden { display: none; }
 .staff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
 .staff-card {
   background: var(--white);
@@ -984,3 +1029,16 @@ tr:hover td { background: #fff9e6; }
   transition: color 0.15s;
 }
 .main-nav .cms-link:hover { color: var(--ink); }
+@media (max-width: 920px) {
+  .brand-name {
+    white-space: normal;
+  }
+
+  .main-nav {
+    flex-wrap: wrap;
+  }
+
+  .header-left {
+    min-width: 0;
+  }
+}

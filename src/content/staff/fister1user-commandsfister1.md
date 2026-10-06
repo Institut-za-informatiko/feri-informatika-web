@@ -1,5 +1,5 @@
 ---
-name: "FISTER(1)User CommandsFISTER(1)"
+name: "Iztok Fister"
 role: "Researcher"
 # --- Campos adicionales detectados ---
 # Sección original: "SYNOPSIS"
