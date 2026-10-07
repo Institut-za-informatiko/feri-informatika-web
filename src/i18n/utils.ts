@@ -23,8 +23,8 @@ export function getAlternateUrl(currentUrl: URL, currentLang: Lang): string {
 export function getNavLinks(lang: Lang) {
   return [
     { key: 'nav.about', href: localePath(lang, '/about') },
-    { key: 'nav.research', href: localePath(lang, '/research') },
-    { key: 'nav.studies', href: localePath(lang, '/studies') },
+    { key: 'nav.research', href: localePath(lang, lang === 'en' ? '/research/projects' : '/research/group') },
+    { key: 'nav.studies', href: localePath(lang, '/studies/programmes') },
     { key: 'nav.conferences', href: localePath(lang, '/conferences') },
     { key: 'nav.industry', href: localePath(lang, '/industry') },
     { key: 'nav.achievements', href: localePath(lang, '/achievements') },
