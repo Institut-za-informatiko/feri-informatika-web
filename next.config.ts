@@ -33,6 +33,26 @@ const nextConfig: NextConfig = {
         destination: '/research/projects',
         permanent: true,
       },
+      // Data cleanup 2026-10-08: duplicates merged into former staff, slugs corrected.
+      ...['', '/en'].flatMap((l) => [
+        ...['ivona-colakovic', 'nadica-uzunova-petric', 'zala-lahovnik'].map(
+          (s) => ({
+            source: `${l}/staff/${s}`,
+            destination: `${l}/staff/former/${s}`,
+            permanent: true,
+          })
+        ),
+        {
+          source: `${l}/staff/fister1user-commandsfister1`,
+          destination: `${l}/staff/iztok-fister`,
+          permanent: true,
+        },
+        {
+          source: `${l}/laboratories/lab-ai`,
+          destination: `${l}/laboratories/laboratorij-za-informacijske-sisteme`,
+          permanent: true,
+        },
+      ]),
       {
         source: '/projects/:slug*',
         destination: '/research/projects/:slug*',
