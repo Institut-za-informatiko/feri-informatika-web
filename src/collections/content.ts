@@ -150,7 +150,24 @@ export const Staff: CollectionConfig = {
       type: 'upload',
       relationTo: 'media',
     },
-    { name: 'title', label: 'Naziv', type: 'text', localized: true },
+    {
+      // Shown as "<before> Name, <after>", e.g. "izr. prof. dr. Luka Pavlič, univ. dipl. inž. rač. in inf."
+      type: 'row',
+      fields: [
+        {
+          name: 'titleBefore',
+          label: 'Naziv pred imenom',
+          type: 'text',
+          admin: { placeholder: 'izr. prof. dr.' },
+        },
+        {
+          name: 'titleAfter',
+          label: 'Naziv za imenom',
+          type: 'text',
+          admin: { placeholder: 'univ. dipl. inž. rač. in inf.' },
+        },
+      ],
+    },
     {
       name: 'role',
       label: 'Vloga',

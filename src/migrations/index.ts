@@ -4,6 +4,7 @@ import * as migration_20261008_094049_pages_collection from './20261008_094049_p
 import * as migration_20261008_102112_page_globals_drafts from './20261008_102112_page_globals_drafts';
 import * as migration_20261008_104359_users_passwordless from './20261008_104359_users_passwordless';
 import * as migration_20261008_105609_better_auth_passkeys from './20261008_105609_better_auth_passkeys';
+import * as migration_20261008_142309_staff_title_before_after from './20261008_142309_staff_title_before_after';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20261008_105609_better_auth_passkeys.up,
     down: migration_20261008_105609_better_auth_passkeys.down,
-    name: '20261008_105609_better_auth_passkeys'
+    name: '20261008_105609_better_auth_passkeys',
+  },
+  {
+    up: migration_20261008_142309_staff_title_before_after.up,
+    down: migration_20261008_142309_staff_title_before_after.down,
+    name: '20261008_142309_staff_title_before_after'
   },
 ];

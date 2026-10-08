@@ -13,7 +13,7 @@ import { Section, SectionNews } from '@/components/cards';
 import { BackLink, DetailList, ExternalLinkButton } from '@/components/details';
 import { PageShell, Prose } from '@/components/PageShell';
 import { RichText } from '@/components/RichText';
-import { StaffAvatar } from '@/components/StaffCard';
+import { formalName, StaffAvatar } from '@/components/StaffCard';
 import { Card, CardContent } from '@/components/ui/card';
 import { getTranslations, type Lang } from '@/i18n/translations';
 import { localePath } from '@/i18n/utils';
@@ -33,8 +33,7 @@ export async function generateMetadata({ params }: Props) {
   const photo = toImage(person.photo);
   return {
     title: person.name,
-    description:
-      [person.title, person.role].filter(Boolean).join(' · ') || undefined,
+    description: [formalName(person), person.role].filter(Boolean).join(' · '),
     openGraph: photo ? { images: [photo.src] } : undefined,
   };
 }
@@ -65,8 +64,7 @@ export default async function StaffProfilePage({ params }: Props) {
   return (
     <PageShell
       lang={lang}
-      title={person.name}
-      eyebrow={person.title}
+      title={formalName(person)}
       sidebarTitle={t('about.title')}
       sidebarLinks={aboutSidebar(lang, { staff })}
     >
