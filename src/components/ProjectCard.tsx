@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import {
   Card,
@@ -44,7 +45,7 @@ export function ProjectCard({
   lang: Lang;
 }) {
   return (
-    <a
+    <Link
       href={localePath(lang, `/research/projects/${p.slug}`)}
       className="group flex w-full rounded-xl focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
     >
@@ -62,6 +63,6 @@ export function ProjectCard({
           {projectYears(p, lang)}
         </CardFooter>
       </Card>
-    </a>
+    </Link>
   );
 }

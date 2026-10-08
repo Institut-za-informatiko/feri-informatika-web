@@ -1,5 +1,6 @@
 import { cn } from 'cn';
 import { MailIcon } from 'lucide-react';
+import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import type { Lang } from '@/i18n/translations';
 import { localePath } from '@/i18n/utils';
@@ -44,7 +45,7 @@ export function StaffAvatar({
 
 export function StaffCard({ person, lang }: { person: Staff; lang: Lang }) {
   return (
-    <a
+    <Link
       href={staffHref(lang, person)}
       className="group flex w-full rounded-xl focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
     >
@@ -76,14 +77,14 @@ export function StaffCard({ person, lang }: { person: Staff; lang: Lang }) {
           </div>
         </CardContent>
       </Card>
-    </a>
+    </Link>
   );
 }
 
 /** Compact member row (laboratory pages). */
 export function StaffChip({ person, lang }: { person: Staff; lang: Lang }) {
   return (
-    <a
+    <Link
       href={staffHref(lang, person)}
       className="group flex min-w-0 items-center gap-3 rounded-lg border bg-card p-2.5 transition-colors hover:border-primary focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
     >
@@ -100,6 +101,6 @@ export function StaffChip({ person, lang }: { person: Staff; lang: Lang }) {
           <span className="text-xs text-muted-foreground">{person.role}</span>
         )}
       </div>
-    </a>
+    </Link>
   );
 }

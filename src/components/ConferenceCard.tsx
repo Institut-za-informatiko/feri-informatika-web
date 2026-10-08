@@ -1,5 +1,6 @@
 import { cn } from 'cn';
 import { CalendarIcon, ExternalLinkIcon, MapPinIcon } from 'lucide-react';
+import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/button';
 import {
   Card,
@@ -69,7 +70,7 @@ export function ConferenceCard({
     <Card className="group relative w-full border-t-4 border-t-primary transition-shadow has-[a:hover]:shadow-lg">
       <CardHeader className="gap-3">
         <CardTitle className="text-lg leading-snug">
-          <a
+          <Link
             href={localePath(lang, `/conferences/${c.slug}`)}
             className="outline-none group-has-[a:hover]:text-primary after:absolute after:inset-0 after:rounded-xl focus-visible:after:ring-3 focus-visible:after:ring-ring/50"
           >
@@ -80,7 +81,7 @@ export function ConferenceCard({
                 ({c.acronym})
               </span>
             )}
-          </a>
+          </Link>
         </CardTitle>
         <ConferenceMeta conference={c} lang={lang} />
         <CardDescription className="line-clamp-3">
@@ -89,7 +90,7 @@ export function ConferenceCard({
       </CardHeader>
       {c.url && (
         <CardFooter className="mt-auto">
-          <a
+          <Link
             href={c.url}
             target="_blank"
             rel="noopener noreferrer"
@@ -100,7 +101,7 @@ export function ConferenceCard({
           >
             {t('conferences.website')}
             <ExternalLinkIcon data-icon="inline-end" />
-          </a>
+          </Link>
         </CardFooter>
       )}
     </Card>

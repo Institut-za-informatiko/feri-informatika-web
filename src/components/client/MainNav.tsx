@@ -2,7 +2,8 @@
 
 import { cn } from 'cn';
 import { MenuIcon, XIcon } from 'lucide-react';
-import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { type Lang, locales } from '@/i18n/translations';
 import { getAlternateUrl, localePath } from '@/i18n/utils';
@@ -23,6 +24,7 @@ function LangSwitch({
   onNavigate?: () => void;
   className?: string;
 }) {
+  const router = useRouter();
   return (
     <nav
       aria-label={label}
@@ -39,18 +41,21 @@ function LangSwitch({
               {code}
             </span>
           ) : (
-            <a
+            <Link
               href={getAlternateUrl(pathname, lang)}
               hrefLang={code}
               // Keep the query (e.g. an active ?tag= filter) when switching language.
               onClick={(e) => {
-                e.currentTarget.href = `${getAlternateUrl(pathname, lang)}${window.location.search}`;
+                e.preventDefault();
                 onNavigate?.();
+                router.push(
+                  `${getAlternateUrl(pathname, lang)}${window.location.search}`
+                );
               }}
               className="uppercase transition-colors hover:text-primary"
             >
               {code}
-            </a>
+            </Link>
           )}
         </span>
       ))}
@@ -117,7 +122,7 @@ export function MainNav({
         )}
       >
         <div className="flex h-16 items-center justify-between gap-4 px-3 sm:px-5">
-          <a
+          <Link
             href={localePath(lang, '/')}
             aria-label={labels.home}
             className="group flex min-w-0 items-center gap-2.5"
@@ -132,11 +137,11 @@ export function MainNav({
               {siteName}
             </span>
             <span className="hidden h-5 w-1 shrink-0 rounded-full bg-highlight transition-transform group-hover:scale-y-125 sm:block" />
-          </a>
+          </Link>
 
           <div className="hidden items-center gap-1 xl:flex">
             {items.map((item) => (
-              <a
+              <Link
                 key={item.href}
                 href={item.href}
                 aria-current={isActive(item.href) ? 'page' : undefined}
@@ -146,7 +151,7 @@ export function MainNav({
                 )}
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
             <LangSwitch
               lang={lang}
@@ -181,7 +186,7 @@ export function MainNav({
         >
           <div className="flex max-h-[calc(80svh-1rem)] flex-col gap-1 overflow-y-auto border-t px-3 pt-3 pb-4 sm:px-5">
             {items.map((item) => (
-              <a
+              <Link
                 key={item.href}
                 href={item.href}
                 onClick={close}
@@ -189,7 +194,7 @@ export function MainNav({
                 className="rounded-xl px-3 py-3 text-base font-medium text-foreground transition-colors hover:bg-muted aria-[current=page]:bg-muted aria-[current=page]:text-primary"
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
             <LangSwitch
               lang={lang}

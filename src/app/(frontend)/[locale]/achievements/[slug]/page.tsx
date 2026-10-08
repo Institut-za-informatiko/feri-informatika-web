@@ -1,4 +1,5 @@
 import { PlayIcon } from 'lucide-react';
+import Link from 'next/link';
 import {
   CoverImage,
   Gallery,
@@ -88,7 +89,7 @@ export default async function AchievementPage({ params }: Props) {
                   {t('achievements.videoUnsupported')}
                 </video>
               ) : (
-                <a
+                <Link
                   key={url}
                   href={url}
                   target="_blank"
@@ -102,7 +103,7 @@ export default async function AchievementPage({ params }: Props) {
                   <span className="truncate">
                     {t('achievements.openVideo')}
                   </span>
-                </a>
+                </Link>
               )
             )}
           </div>

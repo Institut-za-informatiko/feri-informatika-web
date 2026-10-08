@@ -1,4 +1,5 @@
 import { ArrowRightIcon } from 'lucide-react';
+import Link from 'next/link';
 import { Section, SectionNews } from '@/components/cards';
 import { BackLink } from '@/components/details';
 import { PageShell, Prose } from '@/components/PageShell';
@@ -84,10 +85,10 @@ export default async function ProjectPage({ params }: Props) {
           {t('research.project.backLink')}
         </BackLink>
         {project.newsLink && (
-          <a href={project.newsLink} className={buttonVariants()}>
+          <Link href={project.newsLink} className={buttonVariants()}>
             {t('research.project.relatedNews')}
             <ArrowRightIcon data-icon="inline-end" />
-          </a>
+          </Link>
         )}
       </div>
 

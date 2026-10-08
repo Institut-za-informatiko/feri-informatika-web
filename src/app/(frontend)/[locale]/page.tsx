@@ -1,4 +1,5 @@
 import { ArrowRightIcon } from 'lucide-react';
+import Link from 'next/link';
 import {
   AchievementCard,
   CardGrid,
@@ -30,10 +31,13 @@ const populated = <T,>(list: unknown): T[] =>
 
 function MoreLink({ href, label }: { href: string; label: string }) {
   return (
-    <a href={href} className={buttonVariants({ variant: 'link', size: 'sm' })}>
+    <Link
+      href={href}
+      className={buttonVariants({ variant: 'link', size: 'sm' })}
+    >
       {label}
       <ArrowRightIcon data-icon="inline-end" />
-    </a>
+    </Link>
   );
 }
 
