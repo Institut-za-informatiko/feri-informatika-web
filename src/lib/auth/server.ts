@@ -68,6 +68,10 @@ export const auth = betterAuth({
   account: { modelName: 'ba_account' },
   verification: { modelName: 'ba_verification' },
   emailAndPassword: { enabled: false },
+  // Behind Cloudflare and Nginx Proxy Manager: rate limits key on the real client IP.
+  advanced: {
+    ipAddress: { ipAddressHeaders: ['cf-connecting-ip', 'x-forwarded-for'] },
+  },
   rateLimit: {
     enabled: true,
     customRules: {
