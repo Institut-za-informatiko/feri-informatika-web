@@ -36,13 +36,14 @@ Administrators add people under **Administracija → Uporabniki → Create New**
 
 ## Drafts, preview and publishing
 
-News, achievements, staff and pages have **drafts**:
+News, achievements, staff, text pages, **O inštitutu** and **Raziskovalna skupina** have **drafts**:
 
-- **Save Draft** stores your changes privately. Nothing changes on the website.
+- While you edit, your changes are **saved automatically as a draft**. Nothing changes on
+  the website.
 - **Live Preview** (button at the top of the editor) shows the real page next to the form
   and updates as you type. Switch between phone, tablet and desktop width there.
 - **Preview** opens the draft page in a new tab.
-- **Publish changes** makes them public. The website shows them **immediately**.
+- **Publish changes** makes the draft public. The website shows it **immediately**.
 - **Unpublish** (in the ⋯ menu) takes an entry off the website without deleting it.
 - **Versions** (tab at the top of an entry) shows earlier versions and lets you restore one.
 
