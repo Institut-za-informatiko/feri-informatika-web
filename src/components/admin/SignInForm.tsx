@@ -69,19 +69,27 @@ export function SignInForm() {
   const [resent, setResent] = useState(false);
   const [passkeyError, setPasskeyError] = useState(false);
 
+  // After a passkey ceremony, go to the admin as soon as a session exists. The session is
+  // checked as well, because on iOS the autofill promise can settle without data even though
+  // the server already signed the person in.
+  const finishPasskey = async (error: unknown) => {
+    if (!error || (await authClient.getSession()).data) {
+      window.location.assign(target);
+      return true;
+    }
+    return false;
+  };
+
   // Offer saved passkeys in the email field's autofill as soon as the page opens.
   useEffect(() => {
-    let cancelled = false;
     (async () => {
       if (!(await PublicKeyCredential?.isConditionalMediationAvailable?.()))
         return;
       const { error } = await authClient.signIn.passkey({ autoFill: true });
-      if (!cancelled && !error) window.location.assign(target);
+      await finishPasskey(error);
     })().catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, [target]);
+    // Once per page load (finishPasskey only reads the redirect target).
+  }, []);
 
   const sendCode = async (again = false) => {
     if (!again) setStep('sending');
@@ -112,8 +120,7 @@ export function SignInForm() {
   const signInWithPasskey = async () => {
     setPasskeyError(false);
     const { error } = await authClient.signIn.passkey();
-    if (error) setPasskeyError(true);
-    else window.location.assign(target);
+    if (!(await finishPasskey(error))) setPasskeyError(true);
   };
 
   const grid = { display: 'grid', gap: 'calc(var(--base) * 0.75)' } as const;
