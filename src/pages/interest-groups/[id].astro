@@ -10,7 +10,7 @@ export async function getStaticPaths() {
 
 const { group } = Astro.props;
 const { Content } = await render(group);
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const allGroups = await getCollection("interestGroups");
 

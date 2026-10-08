@@ -9,7 +9,7 @@ import { localePath } from "@/i18n/utils";
 
 const lang = "en";
 const t = useTranslations(lang);
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 let highlightedNewsIds: string[]         = [];
 let highlightedAchievementsIds: string[] = [];

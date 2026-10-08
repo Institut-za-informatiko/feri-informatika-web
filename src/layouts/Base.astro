@@ -18,11 +18,11 @@ interface Props {
 }
 
 const { title, sidebarTitle, sidebarLinks, fullWidth, wide } = Astro.props;
-const lang: Lang = Astro.props.lang ?? getLangFromUrl(Astro.url, import.meta.env.BASE_URL);
+const lang: Lang = Astro.props.lang ?? getLangFromUrl(Astro.url, import.meta.env.BASE_URL.replace(/\/$/, ''));
 const t = useTranslations(lang);
 const alternateUrl = getAlternateUrl(Astro.url, lang);
 const mainNav = getNavLinks(lang);
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 function getSidebarTitle(): string {
   if (sidebarTitle) return sidebarTitle;

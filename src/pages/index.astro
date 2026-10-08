@@ -5,7 +5,7 @@ import { Image } from "astro:assets";
 import { readFileSync } from "fs";
 import { resolve } from "path";
 
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const slidesRaw = (await getCollection("heroSlides"))
   .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
