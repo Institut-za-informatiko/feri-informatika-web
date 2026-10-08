@@ -11,6 +11,7 @@ docker exec feri-informatika-web-cms-db pg_dump -U payload -d payload -Fc > "bac
 docker run --rm \
   --volumes-from feri-informatika-web-cms \
   -v "$PWD/backups:/backups" \
+  --user "$(id -u):$(id -g)" \
   alpine tar -czf "/backups/media-$stamp.tar.gz" -C /app media
 
 find backups -name 'db-*.dump' -mtime +7 -delete
