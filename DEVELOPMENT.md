@@ -1,69 +1,110 @@
-# Development Guide — Technical Documentation
+# Development
 
-## Repository Rules
+## Requirements
 
-Automated coding agents must follow `AGENTS.md` in the repository root. The most important rule for this site is accessibility: DOM order must match visual and reading order, and semantic markup should not be replaced with CSS-only visual reordering.
+- Node.js ≥ 22.12 and pnpm (`corepack enable`)
+- Docker (for a local Postgres)
+- Optional, for secrets: `sops`, `age`, `just` (`brew install sops age just`)
 
-##  Setup
-
-### Requirements
-
-- **Node.js** ≥ 22.12.0
-- **pnpm** (enable via `corepack enable`)
-- **Git** (for version control)
-- **VS Code** (recommended) with Astro + Biome extensions
-- _Optional (secrets):_ `sops`, `age`, `just` — `brew install sops age just`
-
-### Installation
+## Setup
 
 ```bash
-# Clone the repository
 git clone https://github.com/Institut-za-informatiko/feri-informatika-web.git
 cd feri-informatika-web
-
-# Enable pnpm (once)
 corepack enable
-
-# Install dependencies
 pnpm install
 
-# Start the CMS (Postgres in Docker + Payload on :3000)
-docker run -d --name fiw-cms-db -p 127.0.0.1:5432:5432 \
+docker run -d --name fiw-db -p 127.0.0.1:5432:5432 \
   -e POSTGRES_USER=payload -e POSTGRES_PASSWORD=payload -e POSTGRES_DB=payload postgres:17-alpine
-cp cms/.env.example cms/.env
-pnpm --filter cms payload migrate
-pnpm --filter cms dev
-
-# Start the site against it (in another terminal)
-CMS_URL=http://localhost:3000 pnpm dev
+cp .env.example .env.local
+pnpm payload migrate
+pnpm dev
 ```
 
-Site: **http://localhost:4321** · CMS: **http://localhost:3000/admin**
+Site: http://localhost:3000 · CMS: http://localhost:3000/admin (the first account you
+create there becomes an administrator).
 
-The site has no content of its own: every page is built from the CMS REST API.
-To work on a realistic dataset, restore a dump from the server (see
-[DEPLOYMENT.md](DEPLOYMENT.md#backups)).
+For realistic content, restore a production dump (see [DEPLOYMENT.md](DEPLOYMENT.md#backups))
+into the local database and copy the media files into `media/`.
 
-### Lint & format
+## Commands
 
-Biome handles linting and formatting (JS/TS/JSON; `.astro` files are left to
-the Astro tooling).
+| Command | What it does |
+|---|---|
+| `pnpm dev` | Dev server with hot reload |
+| `pnpm build` / `pnpm start` | Production build / server |
+| `pnpm lint` / `pnpm lint:ci` | Biome check with / without fixes |
+| `pnpm typecheck` | TypeScript |
+| `pnpm payload migrate:create <name>` | New migration after a schema change |
+| `pnpm payload migrate` | Apply pending migrations |
+| `pnpm generate:types` | Regenerate `src/payload-types.ts` |
+| `pnpm generate:importmap` | Regenerate the admin import map after adding admin components |
+| `pnpm create:admin` | Create or reset an administrator (`ADMIN_EMAIL`, `ADMIN_PASSWORD`) |
 
-```bash
-pnpm lint       # check + auto-fix + organize imports
-pnpm format     # format only
-pnpm lint:ci    # check without writing (used in CI)
+## Architecture
+
+### Routing and languages
+
+- `src/app/(frontend)/[locale]/…` serves both languages (`sl`, `en`).
+- `src/proxy.ts` rewrites un-prefixed URLs to the `sl` locale, so Slovenian stays at `/news/x`
+  and English at `/en/news/x`. `/sl/…` redirects to the un-prefixed URL.
+- Old URLs are kept with redirects in `next.config.ts`.
+
+### Data
+
+`src/lib/payload.ts` reads content through the Payload Local API from server components:
+
+```tsx
+const news = await findAll('news', lang, { sort: '-date' });
+const article = await findBySlug('news', slug, lang); // 404s if missing
+const about = await findGlobal('about', lang);
 ```
 
-### Secrets (sops + age)
+Reads use the visitor's locale with Slovenian fallback. Outside draft mode only published
+documents are returned; in draft mode (preview) editors see drafts.
 
-`.env` holds the production CMS secrets (`PAYLOAD_SECRET`, `POSTGRES_PASSWORD`,
-`GITHUB_DISPATCH_TOKEN`, the first admin login). The site build itself needs only
-`CMS_URL`.
+### Caching
 
-Encrypted `.env.enc` is committed; the plaintext `.env` is gitignored. Recipients
-are configured in `.sops.yaml`. Your **private** age key lives outside the repo at
-the sops default path (macOS: `~/Library/Application Support/sops/age/keys.txt`).
+Pages have `generateStaticParams` returning `[]`: each page renders on its first request and
+is cached until content changes. `src/hooks/revalidate.ts` purges the cache on every
+publish, unpublish or delete, so new content shows up on the next request. The Docker build
+needs no database.
+
+### Preview
+
+- `admin.livePreview` (in `src/payload.config.ts`) and each collection's Preview button point
+  to `/next/preview?path=…&secret=…` (`src/lib/preview.ts`).
+- That route checks the CMS login and `PREVIEW_SECRET`, enables Next draft mode and redirects
+  to the page.
+- `RefreshOnSave` re-renders the page while the editor types.
+
+### UI
+
+- shadcn/ui components live in `src/components/ui` (added with `pnpm dlx shadcn@latest add …`).
+- Theme tokens (UM blue, accent yellow, fonts) are in `src/app/(frontend)/globals.css`.
+- Shared building blocks: `PageShell`, `PageHeader`, `Prose` (`src/components/PageShell.tsx`),
+  and `CardGrid`, `ImageCard`, `Section`, `Gallery`, `TagFilteredGrid` (`src/components/cards.tsx`).
+- Client components (interactivity only) are in `src/components/client`.
+
+### Add a page
+
+1. Create `src/app/(frontend)/[locale]/<path>/page.tsx` with `params: Promise<{ locale: Lang }>`.
+2. Fetch with `findAll` / `findBySlug` / `findGlobal`, render inside `PageShell`.
+3. Put every UI string in `src/i18n/translations.ts` (both languages).
+4. Free-standing text pages need no code: create them in the CMS under **Strani**, with the
+   path as slug, and add a route that renders them with `CmsPage`.
+
+### Add a content type
+
+1. Add a `CollectionConfig` in `src/collections/` (use `slugField`, `bodyField`, `revalidateHooks`).
+2. `pnpm payload migrate:create <name>` and `pnpm generate:types`; commit `src/migrations/*`.
+3. If it has public pages, add its path to `src/lib/preview.ts`.
+
+## Secrets (sops + age)
+
+`.env.enc` is committed; `.env` and `.env.local` are gitignored. Recipients are in `.sops.yaml`;
+your private age key stays at the sops default path
+(macOS: `~/Library/Application Support/sops/age/keys.txt`).
 
 ```bash
 just decrypt    # .env.enc -> .env
@@ -71,186 +112,8 @@ just encrypt    # .env -> .env.enc
 just edit-env   # edit .env.enc in place
 ```
 
-##  Architecture
+## Resources
 
-### Static Site Generation (SSG)
-
-This is an **Astro SSG** project all content is compiled into static HTML files **at build time**, not during visits.
-
-### Dual Language Structure (Slovenian/English)
-
-```
-src/pages/
-├── index.astro                    ← SL (/)
-├── about.astro
-├── research/
-│   └── group.astro
-└── en/
-    ├── index.astro                ← EN (/en/)
-    ├── about.astro
-    └── research/
-        └── group.astro
-```
-
-**Rule:** Every Slovenian page must have an English equivalent in the `en/` folder. I18n is handled automatically by `astro.config.mjs`.
-
-##  Common Changes
-
-### 1. Add a New Page
-
-**For Slovenian:**
-```astro
-src/pages/nova-stran.astro
----
-import Base from "../layouts/Base.astro";
-const lang = "sl";
----
-<Base lang={lang} title="Naslov strani">
-  <h1>Vsebina</h1>
-</Base>
-```
-
-**For English (required):**
-```astro
-src/pages/en/nova-stran.astro
----
-import Base from "../../layouts/Base.astro";
-const lang = "en";
----
-<Base lang={lang} title="Page Title">
-  <h1>Content</h1>
-</Base>
-```
-
-### 2. Add a New Content Collection
-
-1. Define it in the CMS: add a `CollectionConfig` to `cms/src/collections/content.ts`
-   and list it in `contentCollections`. Use `slugField`, `bodyFields` and
-   `rebuildHooks` like the existing ones.
-2. Generate the schema migration and types:
-   ```bash
-   pnpm --filter cms payload migrate:create my_collection
-   pnpm --filter cms generate:types
-   ```
-   Commit the files in `cms/src/migrations/`; they run automatically when the CMS
-   container starts.
-3. Expose it to Astro in `src/content.config.ts` with `localized('<slug>', schema, map)`,
-   which defines `<name>` (Slovenian) and `<name>En`. Add both to `collections`.
-
-### 3. Change Styles (CSS)
-
-Global styles:
-```
-public/styles/global.css
-```
-
-Colors and CSS variables:
-```css
-:root {
-  --um-blue: #003366;
-  --accent: #FFD700;
-  /* ... */
-}
-```
-
-Components have local styles in `<style>` blocks within `.astro` files.
-
-### 4. Edit a Component
-
-Components are in `src/components/`:
-```
-NewsCard.astro       ← Individual news cards
-SectionNews.astro    ← News section with filtering
-```
-
-Edit `NewsCard.astro` and it automatically affects all news listing pages.
-
-##  I18n (Bilingual Support)
-
-### How it Works
-
-1. **astro.config.mjs** defines locales:
-```javascript
-i18n: {
-  defaultLocale: "sl",
-  locales: ["sl", "en"],
-  routing: {
-    prefixDefaultLocale: false,  // SL is /feri.../
-  },
-}
-```
-
-2. **Automatic routing:**
-   - `/foo` → `src/pages/foo.astro` (SL)
-   - `/en/foo` → `src/pages/en/foo.astro` (EN)
-
-3. **UI Translations** (`src/i18n/translations.ts`):
-```typescript
-export const translations = {
-  sl: {
-    "nav.home": "Domov",
-    "nav.about": "O nas",
-  },
-  en: {
-    "nav.home": "Home",
-    "nav.about": "About",
-  },
-};
-```
-
-4. **Usage:**
-```astro
-import { useTranslations } from "../i18n/utils";
-const t = useTranslations(lang);
-<h1>{t("nav.home")}</h1>
-```
-
-### Add a New Translation
-
-1. Open `src/i18n/translations.ts`
-2. Add key in both languages:
-```typescript
-"footer.contact": "Kontakt",  // SL
-"footer.contact": "Contact",  // EN
-```
-3. Use: `{t("footer.contact")}`
-
-##  Content Collections
-
-All content lives in the **Payload CMS** (`cms/`, Postgres). At build time
-`src/content.config.ts` loads it through `src/lib/cms.ts`:
-
-- every collection exists as `<name>` (Slovenian) and `<name>En` (English, falling back
-  to Slovenian per field);
-- entry ids are the CMS `slug`, so URLs are stable;
-- rich text arrives as HTML (`render(entry)` → `<Content />` works as before);
-- images are objects `{ src, srcset, width, height, alt }`; render them with
-  `src/components/CmsImage.astro` (resized variants are made by the CMS on upload);
-- singletons: `getEntry("about", "institute")`, `getEntry("research", "group")`,
-  `getEntry("highlighted", "config")`.
-
-### How to Read Content in .astro Files
-
-```astro
----
-import { getCollection } from "astro:content";
-
-// Use "newsEn" on pages under src/pages/en/
-const allNews = await getCollection("news");
-const newsByTag = allNews.filter(n => n.data.tags.includes("student"));
----
-```
-
-### Schemas
-
-The source of truth is the CMS config in `cms/src/collections/` and `cms/src/globals/`.
-The zod schemas in `src/content.config.ts` describe what the site reads from it.
-
-##  Resources
-
-- [Astro Documentation](https://docs.astro.build)
-- [Payload CMS](https://payloadcms.com/docs)
-
-##  For Content Editors
-
-Editors who only work with the CMS don't need this guide. See `CMS_GUIDE.md`.
+- [Next.js docs](https://nextjs.org/docs)
+- [Payload docs](https://payloadcms.com/docs)
+- [shadcn/ui](https://ui.shadcn.com/docs)

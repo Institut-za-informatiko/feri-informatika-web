@@ -1,22 +1,17 @@
 import { defaultLang, type Lang } from './translations';
 
-const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
-
+/** Public URL for a path in a locale. Slovenian has no prefix, English lives under /en. */
 export function localePath(lang: Lang, path: string): string {
   const prefix = lang === defaultLang ? '' : `/${lang}`;
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  return `${BASE}${prefix}${cleanPath}`;
+  return `${prefix}${cleanPath}`;
 }
 
-export function getAlternateUrl(currentUrl: URL, currentLang: Lang): string {
+/** The same page in the other language. */
+export function getAlternateUrl(pathname: string, currentLang: Lang): string {
   const targetLang: Lang = currentLang === 'sl' ? 'en' : 'sl';
-
-  let path = currentUrl.pathname.replace(BASE, '') || '/';
-
-  if (currentLang === 'en') {
-    path = path.replace(/^\/en/, '') || '/';
-  }
-
+  const path =
+    currentLang === 'en' ? pathname.replace(/^\/en/, '') || '/' : pathname;
   return localePath(targetLang, path);
 }
 
@@ -36,4 +31,14 @@ export function getNavLinks(lang: Lang) {
     { key: 'nav.achievements', href: localePath(lang, '/achievements') },
     { key: 'nav.news', href: localePath(lang, '/news') },
   ] as const;
+}
+
+const dateLocales: Record<Lang, string> = { sl: 'sl-SI', en: 'en-GB' };
+
+export function formatDate(date: string | Date, lang: Lang): string {
+  return new Date(date).toLocaleDateString(dateLocales[lang], {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
 }

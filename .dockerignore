@@ -1,12 +1,8 @@
 node_modules
-**/node_modules
-dist
-.astro
+.next
 .git
 .github
-
-cms/.next
-cms/media
+media
 
 .vscode
 .idea
@@ -14,4 +10,4 @@ cms/media
 *.log
 .env
 .env.*
-**/.env
+!.env.example
