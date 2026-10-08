@@ -1,6 +1,6 @@
 ---
 import Base from "@/layouts/Base.astro";
-import { Image } from "astro:assets";
+import Image from "@/components/CmsImage.astro";
 import { getCollection } from "astro:content";
 import { useTranslations } from "@/i18n/translations";
 import { localePath } from "@/i18n/utils";
@@ -8,7 +8,7 @@ import { localePath } from "@/i18n/utils";
 const lang = "en";
 const t = useTranslations(lang);
 
-const allNews = (await getCollection("news"))
+const allNews = (await getCollection("newsEn"))
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
 const tags = ["student", "conference", "scientific", "professional",

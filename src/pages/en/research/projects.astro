@@ -8,7 +8,7 @@ import { localePath } from "@/i18n/utils";
 const lang = "en";
 const t = useTranslations(lang);
 
-const all    = await getCollection("projects");
+const all    = await getCollection("projectsEn");
 const active = all.filter(p => p.data.status === "active");
 const past   = all.filter(p => p.data.status === "past");
 

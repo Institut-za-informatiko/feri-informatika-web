@@ -1,14 +1,13 @@
 ---
 import Base from "@/layouts/Base.astro";
-import { Image } from "astro:assets";
+import Image from "@/components/CmsImage.astro";
 import SectionNews from "@/components/SectionNews.astro";
 import { getCollection } from "astro:content";
-import { marked } from "marked";
 import { useTranslations } from "@/i18n/translations";
 import { localePath } from "@/i18n/utils";
 
 export async function getStaticPaths() {
-  const staff = await getCollection("staff");
+  const staff = await getCollection("staffEn");
   return staff.map(p => ({ params: { id: p.id }, props: { person: p } }));
 }
 
@@ -16,7 +15,7 @@ const lang = "en";
 const t = useTranslations(lang);
 const { person } = Astro.props;
 
-const allStaff = await getCollection("staff");
+const allStaff = await getCollection("staffEn");
 const sidebarLinks = [
   { label: t("about.sidebar.labs"),   href: localePath(lang, "/laboratories") },
   { label: t("about.sidebar.groups"), href: localePath(lang, "/interest-groups") },
@@ -31,64 +30,8 @@ const sidebarLinks = [
   },
 ];
 
-const skipFields = new Set([
-  'name', 'photo', 'title', 'role', 'email', 'phone',
-  'office', 'contactHours', 'linkedin', 'cobiss', 'section',
-]);
-
-const knownLabels: Record<string, string> = {
-  researchTopics:    "Main Research Areas",
-  publications:      "Selected Publications",
-  cv:                "Curriculum Vitae",
-  teaching:          "Teaching",
-  projects:          "Projects",
-  editorial:         "Editorial Activities",
-  awards:            "Awards",
-  conferenceOrg:     "Conference Organisation",
-  projectsCollab:    "International Projects and Collaboration",
-  reviewerFor:       "Reviewer for Journals",
-  certificates:      "Certificates",
-  zaposlitev:        "Employment",
-  kratkaBiografija:  "Short Biography",
-  raziskovalnoDelo:  "Research Work",
-  delovneIzkusnje:   "Work Experience",
-  izobrazevanjeVTujini: "Education Abroad",
-  studijInRaziskovanjeVTujini: "Study and Research Abroad",
-  studijskeIzmenjave: "Study Exchanges",
-  izmenjave:         "Exchanges",
-  vabljenaPredavanja: "Invited Lectures",
-  delavniceInVabljenaPredavanja: "Workshops and Invited Lectures",
-  izvedbaDelavnic:   "Workshop Delivery",
-  posebnaVabila:     "Special Invitations",
-  organiziranjeInVodenjeKonferenc: "Conference Organisation and Chairing",
-  sodelovanjePriKonferencah: "Conference Participation",
-  konferencneAktivnosti: "Conference Activities",
-  projektneAktivnosti: "Project Activities",
-  vodjaKoordinatorProjekta: "Project Leader/Coordinator",
-  sodelovanjePriProjektu: "Project Collaboration",
-  recenzijskeInUredniskeAktivnosti: "Review and Editorial Activities",
-  pedagoskaDejavnost: "Teaching Activities",
-  mentorstva:        "Supervision",
-  clanstvo:          "Membership",
-  clanicaOdborov:    "Committee Membership",
-  polozaji:          "Positions",
-  sodelovanjeVDelovihSkupinah: "Working Group Participation",
-  mednarodnaDejavnost: "International Activities",
-  vMedijih:          "In the Media",
-  izobraževanje:     "Education",
-};
-
-function camelToLabel(key: string): string {
-  if (knownLabels[key]) return knownLabels[key];
-  return key
-    .replace(/([A-Z])/g, ' $1')
-    .replace(/^./, s => s.toUpperCase())
-    .trim();
-}
-
-const sections = Object.entries(person.data)
-  .filter(([key, value]) => !skipFields.has(key) && value && typeof value === 'string' && value.trim() !== '')
-  .map(([key, value]) => ({ key, label: camelToLabel(key), value: value as string }));
+// Profile sections are edited in the CMS as heading + rich text; the API sends HTML.
+const sections = person.data.sections;
 ---
 <Base title={person.data.name} lang={lang} sidebarLinks={sidebarLinks}>
 
@@ -125,10 +68,10 @@ const sections = Object.entries(person.data)
       </div>
     </div>
 
-    {sections.map(({ label, value }) => (
+    {sections.map(({ heading, html }) => (
       <div style="margin-bottom:1.4rem;">
-        <div class="section-heading"><h3>{label}</h3></div>
-        <div class="prose" set:html={marked.parse(value)} />
+        <div class="section-heading"><h3>{heading}</h3></div>
+        <div class="prose" set:html={html} />
       </div>
     ))}
 

@@ -8,7 +8,7 @@ import { localePath } from "@/i18n/utils";
 const lang = "en";
 const t = useTranslations(lang);
 
-const groups = await getCollection("interestGroups");
+const groups = await getCollection("interestGroupsEn");
 
 const sidebarLinks = [
   { label: t("about.sidebar.labs"),   href: localePath(lang, "/laboratories") },

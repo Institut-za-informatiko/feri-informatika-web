@@ -6,7 +6,7 @@ import { useTranslations } from "@/i18n/translations";
 import { localePath } from "@/i18n/utils";
 
 export async function getStaticPaths() {
-  const projects = await getCollection("projects");
+  const projects = await getCollection("projectsEn");
   return projects.map(p => ({ params: { id: p.id }, props: { project: p } }));
 }
 
@@ -15,7 +15,7 @@ const t = useTranslations(lang);
 const { project } = Astro.props;
 const { Content } = await render(project);
 
-const allProjects = await getCollection("projects");
+const allProjects = await getCollection("projectsEn");
 
 const sidebarLinks = [
   { label: t("research.sidebar.researchGroup"), href: localePath(lang, "/research/group") },
