@@ -5,6 +5,8 @@ services:
       context: .
     container_name: feri-informatika-web
     restart: unless-stopped
+    depends_on:
+      - cms
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1/healthz"]
       interval: 30s
@@ -14,7 +16,55 @@ services:
     # No published ports: Nginx Proxy Manager on bclabum reaches the container by name.
     networks:
       - nginx-proxy-internal
+      - internal
+
+  cms:
+    image: ghcr.io/institut-za-informatiko/feri-informatika-web-cms:${CMS_IMAGE_TAG:-latest}
+    build:
+      context: .
+      dockerfile: cms/Dockerfile
+    container_name: feri-informatika-web-cms
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URI: postgres://payload:${POSTGRES_PASSWORD}@cms-db:5432/payload
+    depends_on:
+      cms-db:
+        condition: service_healthy
+    volumes:
+      - cms-media:/app/media
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:3000/api/users/me"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    networks:
+      - internal
+
+  cms-db:
+    image: postgres:17-alpine
+    container_name: feri-informatika-web-cms-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: payload
+      POSTGRES_DB: payload
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    volumes:
+      - cms-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U payload -d payload"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+
+volumes:
+  cms-media:
+  cms-db:
 
 networks:
   nginx-proxy-internal:
     external: true
+  internal:
