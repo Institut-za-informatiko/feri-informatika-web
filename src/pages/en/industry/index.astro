@@ -1,7 +1,7 @@
 ---
 import Base from "@/layouts/Base.astro";
 import SectionNews from "@/components/SectionNews.astro";
-import { Image } from "astro:assets";
+import Image from "@/components/CmsImage.astro";
 import { getCollection } from "astro:content";
 import { useTranslations } from "@/i18n/translations";
 import { localePath } from "@/i18n/utils";
@@ -9,7 +9,7 @@ import { localePath } from "@/i18n/utils";
 const lang = "en";
 const t = useTranslations(lang);
 
-const partners = await getCollection("industryPartners");
+const partners = await getCollection("industryPartnersEn");
 
 const sidebarLinks = partners.map(p => ({
   label: p.data.name,

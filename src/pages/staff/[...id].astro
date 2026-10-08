@@ -1,9 +1,8 @@
 ---
 import Base from "../../layouts/Base.astro";
-import { Image } from "astro:assets";
+import Image from "@/components/CmsImage.astro";
 import SectionNews from "../../components/SectionNews.astro";
 import { getCollection } from "astro:content";
-import { marked } from "marked";
 
 export async function getStaticPaths() {
   const staff = await getCollection("staff");
@@ -29,64 +28,8 @@ const sidebarLinks = [
 ];
 
 
-const skipFields = new Set([
-  'name', 'photo', 'title', 'role', 'email', 'phone',
-  'office', 'contactHours', 'linkedin', 'cobiss', 'section',
-]);
-
-const knownLabels: Record<string, string> = {
-  researchTopics:    "Glavna področja raziskovanja",
-  publications:      "Pomembnejše publikacije",
-  cv:                "Življenjepis",
-  teaching:          "Pedagoško delo",
-  projects:          "Projekti",
-  editorial:         "Uredništvo",
-  awards:            "Nagrade",
-  conferenceOrg:     "Organiziranje in vodenje konferenc",
-  projectsCollab:    "Mednarodni projekti in sodelovanje",
-  reviewerFor:       "Recenzent pri revijah",
-  certificates:      "Certifikati",
-  zaposlitev:        "Zaposlitev",
-  kratkaBiografija:  "Kratka biografija",
-  raziskovalnoDelo:  "Raziskovalno delo",
-  delovneIzkusnje:   "Delovne izkušnje",
-  izobrazevanjeVTujini: "Izobraževanja v tujini",
-  studijInRaziskovanjeVTujini: "Študij in raziskovanje v tujini",
-  studijskeIzmenjave: "Študijske izmenjave",
-  izmenjave:         "Izmenjave",
-  vabljenaPredavanja: "Vabljena predavanja",
-  delavniceInVabljenaPredavanja: "Delavnice in vabljena predavanja",
-  izvedbaDelavnic:   "Izvedba delavnic",
-  posebnaVabila:     "Posebna vabila",
-  organiziranjeInVodenjeKonferenc: "Organiziranje in vodenje konferenc",
-  sodelovanjePriKonferencah: "Sodelovanje pri konferencah",
-  konferencneAktivnosti: "Konferenčne aktivnosti",
-  projektneAktivnosti: "Projektne aktivnosti",
-  vodjaKoordinatorProjekta: "Vodja/Koordinator projekta",
-  sodelovanjePriProjektu: "Sodelovanje pri projektu",
-  recenzijskeInUredniskeAktivnosti: "Recenzijske in uredniške aktivnosti",
-  pedagoskaDejavnost: "Pedagoška dejavnost",
-  mentorstva:        "Mentorstva",
-  clanstvo:          "Članstvo",
-  clanicaOdborov:    "Članica odborov",
-  polozaji:          "Položaji",
-  sodelovanjeVDelovihSkupinah: "Sodelovanje v delovnih skupinah",
-  mednarodnaDejavnost: "Mednarodna dejavnost",
-  vMedijih:          "V medijih",
-  izobraževanje:     "Izobraževanje",
-};
-
-function camelToLabel(key: string): string {
-  if (knownLabels[key]) return knownLabels[key];
-  return key
-    .replace(/([A-Z])/g, ' $1')
-    .replace(/^./, s => s.toUpperCase())
-    .trim();
-}
-
-const sections = Object.entries(person.data)
-  .filter(([key, value]) => !skipFields.has(key) && value && typeof value === 'string' && value.trim() !== '')
-  .map(([key, value]) => ({ key, label: camelToLabel(key), value: value as string }));
+// Profile sections are edited in the CMS as heading + rich text; the API sends HTML.
+const sections = person.data.sections;
 ---
 <Base title={person.data.name} sidebarLinks={sidebarLinks}>
 
@@ -124,10 +67,10 @@ const sections = Object.entries(person.data)
       </div>
     </div>
 
-    {sections.map(({ key, label, value }) => (
+    {sections.map(({ heading, html }) => (
       <div style="margin-bottom:1.4rem;">
-        <div class="section-heading"><h3>{label}</h3></div>
-        <div class="prose" set:html={marked.parse(value)} />
+        <div class="section-heading"><h3>{heading}</h3></div>
+        <div class="prose" set:html={html} />
       </div>
     ))}
 

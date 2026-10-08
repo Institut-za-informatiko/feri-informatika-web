@@ -1,187 +1,100 @@
-# CMS Guide Editor's Manual
+# CMS Guide — Editor's Manual
 
-For editors and content managers using Sveltia CMS. **No coding required.**
+For editors and content managers. **No coding required.**
 
-##  How to Login
+## How to log in
 
-1. Open: **https://ii-preview.bclabum.si/admin**
-2. Click **"Login with GitHub"**
-3. Authenticate with your GitHub account (must be repo contributor)
-4. You're now in the CMS!
+1. Open **https://ii-preview.bclabum.si/admin**
+2. Log in with your **email and password**. Accounts are created by an administrator;
+   there is no self sign-up.
+3. Change your password after the first login: click your avatar (bottom left) → **Account**.
 
-##  What Can You Edit?
+Forgot your password? Ask an administrator to set a new one.
 
-The CMS has these collections:
+## Roles
 
-| Collection | What is it? | Where appears on site |
-|-----------|-----------|----------------------|
-| **News** | Articles with photos | /news, homepage |
-| **Achievements** | Awards, conferences, successes | /achievements |
-| **Staff** | Institute members | /staff |
-| **Laboratories** | Research labs | /laboratories |
-| **Interest Groups** | Clubs and special groups | /interest-groups |
-| **Study Programs** | Bachelor/Master programs | /studies |
-| **Student Projects** | Student projects | /studies/student-projects |
-| **Research Projects** | R&D projects | /research/projects |
-| **Conferences** | Conferences, seminars | /conferences |
-| **Industry Partners** | Partners | /industry |
-| **Ethics Opinion** | Ethics committee opinions | /research/ethics |
-| **Hero Slides** | Homepage carousel images | Homepage |
-| **Featured Content** | What shows on homepage | Homepage |
+| Role | Can do |
+|---|---|
+| **Urednik** (editor) | Create, edit, publish and delete all content and media |
+| **Administrator** | Everything an editor can, plus manage user accounts |
 
-##  How to Edit Content?
+Administrators add people under **Administracija → Uporabniki → Create New**.
 
-### Example: Add a New News Article
+## What can you edit?
 
-1. In the CMS, click **"News"**
-2. Click **"+ New"** (green button)
-3. Fill in the fields:
-   - **Title** — article title
-   - **Date** — publication date
-   - **Tags** — choose one or more (student, conference, award, etc.)
-   - **Summary** — brief summary (50-100 words)
-   - **Cover Image** — main photo (click to upload)
-   - **Additional Images** — if you need more photos
-   - **Full Content** — main article text (with formatting)
+| Group | Collection | Where it appears |
+|---|---|---|
+| Vsebina | **Novice** | /news, homepage |
+| Vsebina | **Dosežki** | /achievements |
+| Vsebina | **Osebje** | /staff |
+| Vsebina | **Mediji** | Images used anywhere on the site |
+| Raziskovanje | **Laboratoriji**, **Projekti**, **Konference**, **Etična mnenja** | /laboratories, /research, /conferences |
+| Študij | **Študijski programi**, **Študentski projekti**, **Interesne skupine** | /studies, /interest-groups |
+| Sodelovanje | **Industrijski partnerji** | /industry |
+| Naslovnica | **Drsniki**, **Izpostavljeno** | Homepage slider and highlighted items |
+| Strani | **O inštitutu**, **Raziskovalna skupina** | /about, /research/group |
 
-4. Click **"Save"**
-5. Auto publishes! 
+## Drafts and publishing
 
-### Example: Edit Existing News
+News, achievements and staff have **drafts**:
 
-1. Go to **"News"**
-2. Click the article from the list
-3. Edit what you need
-4. Click **"Save"**
+- **Save Draft** stores your changes privately. Nothing changes on the website.
+- **Publish changes** makes them public.
+- **Unpublish** (in the ⋯ menu) takes an entry off the website without deleting it.
+- **Versions** (tab at the top of an entry) shows earlier versions and lets you restore one.
 
-### Example: Delete a News Article
+Other collections have no drafts: **Save** publishes immediately.
 
-1. Go to **"News"**
-2. Click the article
-3. Click **"..."** (menu) → **"Delete"**
-4. Confirm
+## When do changes appear on the website?
 
-### Tags (Multiple Choice)
+The public website is pre-built for speed. After you publish, the CMS waits **60 seconds**
+(so several quick edits become one update), then the site is rebuilt and deployed.
+Expect the change online **about 3–5 minutes** after your last save.
 
-- **Tags** — choose one or more from:
-  -  Student
-  -  Conference
-  -  Scientific
-  -  Professional
-  -  Project
-  -  Awards
-  -  Interest Groups
+## Slovenian and English
 
-### Relations (Special)
+Use the language switcher at the top of an entry (**Slovenščina / English**):
 
-- **Featured Content** — select which news, achievements, projects appear on homepage
-- Click → search → select
+- Slovenian is the main language and is required.
+- English is optional. Any field left empty in English shows the Slovenian text on the
+  `/en/` pages.
+- Images, dates, emails and links are shared between both languages.
 
-##  Text Formatting (Markdown)
+## Common tasks
 
-In **text** fields, you can use:
+### Add a news article
 
-```markdown
-# Heading 1
-## Heading 2
-### Heading 3
+1. **Novice → Create New**
+2. Fill in **Naslov**, **Povzetek** and **Vsebina**. Set **Datum** and **Oznake** in the sidebar.
+3. **Naslovna slika**: upload or pick an image. **Galerija**: add more images.
+4. **Slug (URL)** fills in from the title if you leave it empty.
+5. **Publish changes**.
 
-**Bold text**
-*Italic text*
+### Add a staff member
 
-- First point
-- Second point
+1. **Osebje → Create New**
+2. Fill in name, role, contact details and photo. Pick a **Skupina** (group) in the sidebar.
+   **Nekdanji sodelavci** moves the person to the "former staff" list.
+3. **Sekcije profila**: add one section per topic (e.g. "Življenjepis", "Pedagoško delo"),
+   each with a heading and rich text.
+4. **Publish changes**.
 
-1. First
-2. Second
+### Change what is highlighted on the homepage
 
-> A quote
+**Naslovnica → Izpostavljeno**: pick 2–5 news items, 2–3 achievements and 2–3 projects.
 
-[Link text](https://example.com)
-```
+### Images
 
-##  How to Add Images?
+- Upload JPG, PNG or WebP. The CMS creates smaller versions automatically, so there is no
+  need to resize beforehand.
+- Fill in **Opis slike (alt)**. It describes the image for screen readers.
+- Drag the focal point to the important part of the image so crops keep it in view.
 
-### Cover Image
+### Videos
 
-Field **"Cover Image"** → click → upload
+Achievements accept video links (**Videoposnetki**): either a full URL (e.g. YouTube) or a
+path to a file in the repository, such as `/assets/media/video.mp4`.
 
-Recommended:
-- Format: JPG or PNG
-- Size: ~1200x800px (landscape)
-- Compress to < 500 KB
+## Need help?
 
-### Additional Images (Gallery)
-
-Field **"Additional Images"** / **"Images"** → click field → **"Add new"** → upload
-
-Each image appears in the gallery on the page.
-
-##  How to Add Videos?
-
-Only for **Achievements**:
-
-1. In **"Videos"** field → click **"Add new"**
-2. Enter URL or local path:
-   - **URL:** `https://example.com/video.mp4`
-   - **Local:** `/assets/media/video.mp4`
-3. Click "Save"
-
-##  Collection-Specific Tips
-
-### News
-
-- Date is required (publication date)
-- Summary is required (brief text)
-- Tags help with filtering on `/news`
-- Images are auto-optimized
-
-### Achievements
-
-- Title is required
-- Date is **optional** (leave blank if unknown)
-- Subtitle is optional
-- Videos are optional
-- Tags help with categorization
-
-### Staff
-
-- Full name is required
-- Photo is optional (if uploaded, it displays)
-- Select **section**: director, professor, assistant, etc.
-- All other fields are optional
-
-### Laboratories / Interest Groups
-
-- Name is required
-- Description is required
-- External link is optional (URL)
-
-##  Languages
-
-The CMS is in **English**. The website has a **Slovenian version** (default) and **English version** (`/en/`).
-
-##  Hero Carousel (Hero Slides)
-
-This controls the homepage carousel:
-
-1. Go to **"Hero Slides"**
-2. Click one
-3. Edit:
-   - **Title** — large text
-   - **Subtitle** — small text
-   - **Image** — background (should be landscape)
-   - **Order** — 1, 2, 3... (sequence on homepage)
-4. Click "Save"
-
-To add a new slide, click **"+ New"**.
-
-##  Featured Content
-
-What appears on the homepage:
-
-1. Go to **"Site Config"** → **"Featured Content"**
-2. In each field (**News**, **Achievements**, **Projects**) select 2-3 items
-3. Click **"Save"**
-
-Changes appear on homepage immediately (or wait 2 minutes for rebuild).
+Contact an administrator of the CMS.

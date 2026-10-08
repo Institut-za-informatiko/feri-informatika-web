@@ -1,6 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
-import { Image } from "astro:assets";
+import Image from "@/components/CmsImage.astro";
 import { getCollection } from "astro:content";
 
 const allNews = (await getCollection("news"))
