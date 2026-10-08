@@ -31,7 +31,7 @@ pnpm install
 pnpm dev
 ```
 
-Access: **http://localhost:4321/feri-informatika-web**
+Access: **http://localhost:4321**
 
 ### Lint & format
 
@@ -279,7 +279,6 @@ Change schemas by editing `astro.config.mjs` and the CMS automatically adapts.
 
 - [Astro Documentation](https://docs.astro.build)
 - [Sveltia CMS](https://github.com/sveltia/cms)
-- [GitHub Pages](https://pages.github.com/)
 
 ##  For Content Editors
 

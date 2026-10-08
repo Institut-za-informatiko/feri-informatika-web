@@ -9,10 +9,8 @@ RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-# Served from the domain root; the GitHub Pages build keeps the /feri-informatika-web default.
 ARG SITE_URL=https://ii-preview.bclabum.si
-ARG BASE_PATH=/
-ENV SITE_URL=$SITE_URL BASE_PATH=$BASE_PATH
+ENV SITE_URL=$SITE_URL
 RUN pnpm build
 
 FROM nginx:1.29-alpine

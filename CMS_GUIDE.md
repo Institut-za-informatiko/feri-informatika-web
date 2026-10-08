@@ -4,7 +4,7 @@ For editors and content managers using Sveltia CMS. **No coding required.**
 
 ##  How to Login
 
-1. Open: **https://institut-za-informatiko.github.io/feri-informatika-web/admin**
+1. Open: **https://ii-preview.bclabum.si/admin**
 2. Click **"Login with GitHub"**
 3. Authenticate with your GitHub account (must be repo contributor)
 4. You're now in the CMS!
@@ -124,7 +124,7 @@ Only for **Achievements**:
 1. In **"Videos"** field → click **"Add new"**
 2. Enter URL or local path:
    - **URL:** `https://example.com/video.mp4`
-   - **Local:** `/feri-informatika-web/assets/media/video.mp4`
+   - **Local:** `/assets/media/video.mp4`
 3. Click "Save"
 
 ##  Collection-Specific Tips
