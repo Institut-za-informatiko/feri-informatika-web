@@ -323,7 +323,8 @@ export interface Staff {
   slug: string;
   section?: ('predstojnik' | 'profesorji' | 'asistenti' | 'tehnicno' | 'prejsnji') | null;
   photo?: (number | null) | Media;
-  title?: string | null;
+  titleBefore?: string | null;
+  titleAfter?: string | null;
   role?: string | null;
   email?: string | null;
   phone?: string | null;
@@ -828,7 +829,8 @@ export interface StaffSelect<T extends boolean = true> {
   slug?: T;
   section?: T;
   photo?: T;
-  title?: T;
+  titleBefore?: T;
+  titleAfter?: T;
   role?: T;
   email?: T;
   phone?: T;

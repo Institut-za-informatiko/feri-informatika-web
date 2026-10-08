@@ -43,6 +43,12 @@ export function StaffAvatar({
   );
 }
 
+/** "izr. prof. dr. Luka Pavlič, univ. dipl. inž. rač. in inf." */
+export const formalName = (
+  p: Pick<Staff, 'name' | 'titleBefore' | 'titleAfter'>
+) =>
+  `${p.titleBefore ? `${p.titleBefore} ` : ''}${p.name}${p.titleAfter ? `, ${p.titleAfter}` : ''}`;
+
 export function StaffCard({ person, lang }: { person: Staff; lang: Lang }) {
   return (
     <Link
@@ -58,13 +64,8 @@ export function StaffCard({ person, lang }: { person: Staff; lang: Lang }) {
           />
           <div className="flex min-w-0 flex-col gap-1">
             <p className="font-heading font-semibold leading-snug text-foreground break-words group-hover:text-primary">
-              {person.name}
+              {formalName(person)}
             </p>
-            {person.title && (
-              <p className="text-sm text-muted-foreground italic">
-                {person.title}
-              </p>
-            )}
             {person.role && (
               <p className="text-sm text-foreground">{person.role}</p>
             )}
