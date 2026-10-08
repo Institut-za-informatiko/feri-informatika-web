@@ -93,6 +93,16 @@ export const Users: CollectionConfig = {
       },
     },
     {
+      // Managed by Better Auth, not stored on this collection; shown on the user's own account.
+      name: 'passkeys',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '@/components/admin/PasskeyManager#PasskeyManager',
+        },
+      },
+    },
+    {
       name: 'active',
       label: 'Lahko se prijavi',
       type: 'checkbox',
