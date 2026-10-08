@@ -24,7 +24,7 @@ pnpm dev
 Site: http://localhost:3000 · CMS: http://localhost:3000/admin.
 
 Add yourself with `ADMIN_EMAIL=you@example.com pnpm create:admin`, then sign in at `/admin`.
-With `RESEND_API_KEY` empty the sign-in link is printed to the dev server log instead of emailed.
+With `RESEND_API_KEY` empty the sign-in code is printed to the dev server log instead of emailed.
 
 For realistic content, restore a production dump (see [DEPLOYMENT.md](DEPLOYMENT.md#backups))
 into the local database and copy the media files into `media/`.
@@ -75,8 +75,9 @@ needs no database.
 ### Sign-in
 
 - Passwordless via Better Auth (`src/lib/auth/server.ts`, mounted at `/api/auth/*`) with
-  the magic-link plugin; emails go out through Resend (`src/lib/auth/email.ts`).
-- Who may sign in is the Payload `users` collection: a link is sent only to an active user,
+  the email-OTP plugin; codes go out through Resend (`src/lib/auth/email.ts`). Codes, not
+  links: Microsoft Defender at UM opens and clicks links in emails and would spend them.
+- Who may sign in is the Payload `users` collection: a code is sent only to an active user,
   and `src/lib/auth/strategy.ts` (a Payload auth strategy) maps the Better Auth session to
   that user on every request. Roles and permissions stay in Payload.
 - Passkeys (`@better-auth/passkey`) are registered from the user's own account page
