@@ -27,11 +27,22 @@ corepack enable
 # Install dependencies
 pnpm install
 
-# Start local development server
-pnpm dev
+# Start the CMS (Postgres in Docker + Payload on :3000)
+docker run -d --name fiw-cms-db -p 127.0.0.1:5432:5432 \
+  -e POSTGRES_USER=payload -e POSTGRES_PASSWORD=payload -e POSTGRES_DB=payload postgres:17-alpine
+cp cms/.env.example cms/.env
+pnpm --filter cms payload migrate
+pnpm --filter cms dev
+
+# Start the site against it (in another terminal)
+CMS_URL=http://localhost:3000 pnpm dev
 ```
 
-Access: **http://localhost:4321**
+Site: **http://localhost:4321** · CMS: **http://localhost:3000/admin**
+
+The site has no content of its own: every page is built from the CMS REST API.
+To work on a realistic dataset, restore a dump from the server (see
+[DEPLOYMENT.md](DEPLOYMENT.md#backups)).
 
 ### Lint & format
 
@@ -46,8 +57,9 @@ pnpm lint:ci    # check without writing (used in CI)
 
 ### Secrets (sops + age)
 
-The repo currently needs **no environment variables** to build or run — the
-tooling below is scaffolded for when a secret is first introduced.
+`.env` holds the production CMS secrets (`PAYLOAD_SECRET`, `POSTGRES_PASSWORD`,
+`GITHUB_DISPATCH_TOKEN`, the first admin login). The site build itself needs only
+`CMS_URL`.
 
 Encrypted `.env.enc` is committed; the plaintext `.env` is gitignored. Recipients
 are configured in `.sops.yaml`. Your **private** age key lives outside the repo at
@@ -112,36 +124,18 @@ const lang = "en";
 
 ### 2. Add a New Content Collection
 
-In `astro.config.mjs`, add a new block to the `collections:` array:
-
-```javascript
-{
-  name: "myCollection",
-  label: "My Collection",
-  folder: "src/content/my-collection",
-  create: true,
-  slug: "{{slug}}",
-  fields: [
-    { name: "title", label: "Title", widget: "string" },
-    { name: "body", label: "Content", widget: "markdown" },
-  ],
-}
-```
-
-Then in `src/content/config.ts` (create if it doesn't exist):
-```typescript
-import { defineCollection, z } from "astro:content";
-import { sveltiaLoader } from "astro-loader-sveltia-cms";
-
-const myCollection = defineCollection({
-  loader: sveltiaLoader("myCollection"),
-  schema: z.object({
-    title: z.string(),
-  }),
-});
-
-export const collections = { myCollection };
-```
+1. Define it in the CMS: add a `CollectionConfig` to `cms/src/collections/content.ts`
+   and list it in `contentCollections`. Use `slugField`, `bodyFields` and
+   `rebuildHooks` like the existing ones.
+2. Generate the schema migration and types:
+   ```bash
+   pnpm --filter cms payload migrate:create my_collection
+   pnpm --filter cms generate:types
+   ```
+   Commit the files in `cms/src/migrations/`; they run automatically when the CMS
+   container starts.
+3. Expose it to Astro in `src/content.config.ts` with `localized('<slug>', schema, map)`,
+   which defines `<name>` (Slovenian) and `<name>En`. Add both to `collections`.
 
 ### 3. Change Styles (CSS)
 
@@ -223,18 +217,17 @@ const t = useTranslations(lang);
 
 ##  Content Collections
 
-All content is in `src/content/`:
+All content lives in the **Payload CMS** (`cms/`, Postgres). At build time
+`src/content.config.ts` loads it through `src/lib/cms.ts`:
 
-```
-src/content/
-├── news/              ← News (48+ entries)
-├── achievements/      ← Achievements (48+ entries)
-├── staff/             ← Staff members (15+ entries)
-├── projects/          ← Research projects
-├── laboratories/      ← Labs
-└── config/
-    └── highlighted.json  ← Featured items
-```
+- every collection exists as `<name>` (Slovenian) and `<name>En` (English, falling back
+  to Slovenian per field);
+- entry ids are the CMS `slug`, so URLs are stable;
+- rich text arrives as HTML (`render(entry)` → `<Content />` works as before);
+- images are objects `{ src, srcset, width, height, alt }`; render them with
+  `src/components/CmsImage.astro` (resized variants are made by the CMS on upload);
+- singletons: `getEntry("about", "institute")`, `getEntry("research", "group")`,
+  `getEntry("highlighted", "config")`.
 
 ### How to Read Content in .astro Files
 
@@ -242,43 +235,21 @@ src/content/
 ---
 import { getCollection } from "astro:content";
 
+// Use "newsEn" on pages under src/pages/en/
 const allNews = await getCollection("news");
 const newsByTag = allNews.filter(n => n.data.tags.includes("student"));
 ---
-
-{allNews.map(article => (
-  <article>
-    <h2>{article.data.title}</h2>
-    <p>{article.data.summary}</p>
-  </article>
-))}
 ```
 
-### Schemas (Data Structures)
+### Schemas
 
-Schemas are in `astro.config.mjs` (Sveltia integration).
-
-**Example — News:**
-```javascript
-{
-  name: "news",
-  fields: [
-    { name: "title", label: "Title", widget: "string" },
-    { name: "date", label: "Date", widget: "datetime" },
-    { name: "tags", label: "Tags", widget: "select", multiple: true, ... },
-    { name: "summary", label: "Summary", widget: "text" },
-    { name: "coverImage", label: "Cover Image", widget: "image", required: false },
-    { name: "body", label: "Full Content", widget: "markdown" },
-  ],
-}
-```
-
-Change schemas by editing `astro.config.mjs` and the CMS automatically adapts.
+The source of truth is the CMS config in `cms/src/collections/` and `cms/src/globals/`.
+The zod schemas in `src/content.config.ts` describe what the site reads from it.
 
 ##  Resources
 
 - [Astro Documentation](https://docs.astro.build)
-- [Sveltia CMS](https://github.com/sveltia/cms)
+- [Payload CMS](https://payloadcms.com/docs)
 
 ##  For Content Editors
 

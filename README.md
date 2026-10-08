@@ -7,7 +7,7 @@ A professional website for the Institute of Informatics (FERI, University of Mar
 A professional institutional website with full bilingual support (Slovenian + English) and content management through a graphical interface, no coding required.
 
 **Live website:** https://ii-preview.bclabum.si
-**CMS (editing):** `/admin` (free access via Sveltia CMS)
+**CMS (editing):** `/admin` (Payload CMS, accounts managed by admins)
 
 ##  What's on the website?
 
@@ -26,8 +26,8 @@ A professional institutional website with full bilingual support (Slovenian + En
 ### For Editors
 
 1. Go to **https://ii-preview.bclabum.si/admin**
-2. Login with GitHub account (must be repo contributor)
-3. Select a collection (e.g., "News", "Achievements", "Staff")
+2. Log in with the email and password an administrator created for you
+3. Select a collection (e.g., "Novice", "Dosežki", "Osebje")
 4. Add, edit or delete content
 
 **Detailed guide:** See `CMS_GUIDE.md`
@@ -57,18 +57,15 @@ pnpm preview
 ##  Project Structure
 
 ```
+cms/                       ← Payload CMS (Next.js app, served at /admin and /api)
+├── src/collections/       ← Content types (news, staff, achievements, …)
+├── src/globals/           ← Singletons (about, research group, highlighted)
+└── src/migrations/        ← Database schema migrations
+
 src/
-├── assets/media/          ← Images, videos (managed via CMS)
-├── components/            ← Reusable Astro components
-│   ├── NewsCard.astro
-│   └── SectionNews.astro
-├── content/               ← All content (Markdown + JSON)
-│   ├── achievements/      ← Achievements & activities
-│   ├── news/              ← News articles
-│   ├── staff/             ← Staff members
-│   ├── laboratories/      ← Labs
-│   ├── projects/          ← Research projects
-│   └── ... (more collections)
+├── content.config.ts      ← Astro collections loaded from the CMS API
+├── lib/cms.ts             ← CMS loader + image/HTML helpers
+├── components/            ← Reusable Astro components (CmsImage, NewsCard, …)
 ├── i18n/                  ← Translations (SL + EN)
 ├── layouts/               ← Base templates
 └── pages/                 ← Routing (auto from structure)
@@ -90,16 +87,17 @@ public/
 
 ##  How it Works
 
-1. **Editor** edits content in CMS (`/admin`)
-2. **GitHub Actions** automatically submits changes (push)
-3. **Astro** rebuilds static HTML files
-4. A Docker image is built and deployed to bclabum (see [DEPLOYMENT.md](DEPLOYMENT.md))
+1. **Editor** publishes content in the CMS (`/admin`)
+2. The CMS triggers a **GitHub Actions** rebuild (`repository_dispatch`, debounced 60 s)
+3. **Astro** rebuilds the static HTML from the CMS API
+4. The new image is deployed to bclabum (see [DEPLOYMENT.md](DEPLOYMENT.md)), live a few minutes after publishing
 
-No database or backend. The site is static HTML served by nginx.
+The public site is static HTML served by nginx; only `/admin` and `/api` reach the CMS.
 
 ##  Security
 
-- Editing is protected with GitHub authentication
+- Editing requires a CMS account (roles: administrator, editor); there is no public sign-up
+- Drafts are never public; the site is built only from published content
 - Only the rendered website is public
 - Build happens automatically via GitHub Actions
 
@@ -107,13 +105,13 @@ No database or backend. The site is static HTML served by nginx.
 ##  Tech Stack
 
 - **Astro 6.3.5** — Static site generator
-- **Sveltia CMS** — Headless CMS (no backend)
+- **Payload CMS** — Self-hosted headless CMS (Postgres), served at `/admin`
 - **GitHub** — Hosting & authentication
 - **Docker + nginx on bclabum** — Public deployment
 - **Markdown** — Content format
 
 ##  Documentation
 
-- **[CMS_GUIDE.md](./CMS_GUIDE.md)** — How to edit content in Sveltia CMS
+- **[CMS_GUIDE.md](./CMS_GUIDE.md)** — How to edit content in the CMS
 - **[DEVELOPMENT.md](./DEVELOPMENT.md)** — Technical guide for developers
 - **[ARCHITECTURE.md](./ARCHITECTURE.md)** — How the project is built (architecture)
