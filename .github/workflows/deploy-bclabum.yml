@@ -1,0 +1,84 @@
+name: Deploy to bclabum
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: bclabum-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  IMAGE: ghcr.io/institut-za-informatiko/feri-informatika-web
+
+jobs:
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE }}
+          tags: |
+            type=sha,format=long
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      # PRs only build to prove the Dockerfile works; nothing is pushed or deployed.
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    needs: image
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: ii-preview
+      url: https://ii-preview.bclabum.si
+    steps:
+      - name: Deploy over SSH
+        env:
+          SSH_KEY: ${{ secrets.BCLABUM_DEPLOY_KEY }}
+          KNOWN_HOSTS: ${{ secrets.BCLABUM_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          # The key is restricted to deploy.sh on the server; the argument is the image tag.
+          ssh -i ~/.ssh/deploy_key urban@157.180.6.182 "sha-${GITHUB_SHA}"
+
+      - name: Smoke test
+        run: |
+          for path in / /about/ /en/ /healthz; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "https://ii-preview.bclabum.si${path}")
+            echo "${code} ${path}"
+            [ "$code" = 200 ] || exit 1
+          done

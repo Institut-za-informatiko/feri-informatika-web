@@ -2,6 +2,7 @@ node_modules
 dist
 .astro
 .git
+.github
 
 .vscode
 .idea
@@ -9,5 +10,3 @@ dist
 *.log
 .env
 .env.*
-
-.gitignore

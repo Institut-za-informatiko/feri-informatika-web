@@ -1,17 +1,20 @@
 services:
-  feri-web:
+  web:
+    image: ghcr.io/institut-za-informatiko/feri-informatika-web:${IMAGE_TAG:-latest}
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: feri-web
-    ports:
-      - "4321:80"
-      - "80:80"
+    container_name: feri-informatika-web
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost/healthz"]
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1/healthz"]
       interval: 30s
       timeout: 5s
       retries: 3
       start_period: 10s
+    # No published ports: Nginx Proxy Manager on bclabum reaches the container by name.
+    networks:
+      - nginx-proxy-internal
 
+networks:
+  nginx-proxy-internal:
+    external: true
