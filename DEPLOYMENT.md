@@ -58,10 +58,12 @@ scp docker-compose.yml deploy/deploy.sh deploy/backup.sh .env urban@157.180.6.18
 | Key | Purpose |
 |---|---|
 | `SERVER_URL` | Public origin of the site |
-| `PAYLOAD_SECRET` | Signs CMS sessions; changing it logs everyone out |
+| `PAYLOAD_SECRET` | Payload's own signing secret (preview tokens, internal) |
 | `POSTGRES_PASSWORD` | Database |
 | `PREVIEW_SECRET` | Required by `/next/preview` to enable draft mode |
-| `ADMIN_EMAIL`, `ADMIN_PASSWORD` | First administrator (`pnpm create:admin`) |
+| `BETTER_AUTH_SECRET` | Signs CMS sessions (Better Auth); changing it logs everyone out |
+| `RESEND_API_KEY`, `MAIL_FROM` | Sends sign-in links via Resend from `noreply@cms.bclabum.si` (domain verified in Resend) |
+| `ADMIN_EMAIL` | First administrator (`pnpm create:admin`) |
 
 ## Backups
 
@@ -78,6 +80,15 @@ Restore:
 docker exec -i feri-informatika-web-cms-db pg_restore -U payload -d payload --clean --if-exists < backups/db-<stamp>.dump
 docker run --rm --volumes-from feri-informatika-web -v "$PWD/backups:/backups" alpine \
   sh -c 'rm -rf /app/media/* && tar -xzf /backups/media-<stamp>.tar.gz -C /app'
+```
+
+## Admin accounts
+
+Sign-in is passwordless (magic link). To add or re-activate an administrator when nobody can
+sign in, run from a checkout with access to the database:
+
+```sh
+ADMIN_EMAIL=… [ADMIN_NAME=…] pnpm create:admin
 ```
 
 ## Local image

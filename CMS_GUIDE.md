@@ -5,11 +5,12 @@ For editors and content managers. **No coding required.**
 ## How to log in
 
 1. Open **https://ii-preview.bclabum.si/admin**
-2. Log in with your **email and password**. Accounts are created by an administrator;
-   there is no self sign-up.
-3. Change your password after the first login: click your avatar (bottom left) → **Account**.
+2. Enter your **email address** and click **Pošlji povezavo**.
+3. Open the email from *noreply@cms.bclabum.si* and click **Prijava**. The link is valid
+   for 15 minutes and works once. You stay signed in for 7 days.
 
-Forgot your password? Ask an administrator to set a new one.
+There are no passwords. Only addresses an administrator has added can sign in; if no email
+arrives, ask an administrator to check your account.
 
 ## Roles
 
@@ -18,7 +19,9 @@ Forgot your password? Ask an administrator to set a new one.
 | **Urednik** (editor) | Create, edit, publish and delete all content and media |
 | **Administrator** | Everything an editor can, plus manage user accounts |
 
-Administrators add people under **Administracija → Uporabniki → Create New**.
+Administrators add people under **Administracija → Uporabniki → Create New** (email, name,
+role). Unticking **Lahko se prijavi** signs the person out immediately and blocks new sign-ins,
+without deleting the account.
 
 ## What can you edit?
 
