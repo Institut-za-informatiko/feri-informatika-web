@@ -54,10 +54,12 @@ export const revalidateAfterDelete: CollectionAfterDeleteHook = ({
 
 export const revalidateGlobal: GlobalAfterChangeHook = ({
   doc,
+  previousDoc,
   global,
   req,
 }) => {
-  purge(req, `global ${global.slug}`);
+  // Autosaved drafts (Live Preview) must not purge the public cache on every keystroke.
+  if (!isDraftSave(doc, previousDoc)) purge(req, `global ${global.slug}`);
   return doc;
 };
 
