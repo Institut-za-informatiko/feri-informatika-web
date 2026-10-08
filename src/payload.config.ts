@@ -26,6 +26,14 @@ export default buildConfig({
   routes: { admin: '/admin', api: '/api' },
   admin: {
     user: Users.slug,
+    components: {
+      // Passwordless sign-in (Better Auth magic link) in place of the password form.
+      beforeLogin: ['@/components/admin/MagicLinkLogin#MagicLinkLogin'],
+      graphics: {
+        Logo: '@/components/admin/Brand#Logo',
+        Icon: '@/components/admin/Brand#Icon',
+      },
+    },
     // Live Preview: the real page in draft mode next to the editor (Payload docs).
     livePreview: {
       url: ({ data, collectionConfig, globalConfig, locale }) =>

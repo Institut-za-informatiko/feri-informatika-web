@@ -21,8 +21,10 @@ pnpm payload migrate
 pnpm dev
 ```
 
-Site: http://localhost:3000 · CMS: http://localhost:3000/admin (the first account you
-create there becomes an administrator).
+Site: http://localhost:3000 · CMS: http://localhost:3000/admin.
+
+Add yourself with `ADMIN_EMAIL=you@example.com pnpm create:admin`, then sign in at `/admin`.
+With `RESEND_API_KEY` empty the sign-in link is printed to the dev server log instead of emailed.
 
 For realistic content, restore a production dump (see [DEPLOYMENT.md](DEPLOYMENT.md#backups))
 into the local database and copy the media files into `media/`.
@@ -39,7 +41,7 @@ into the local database and copy the media files into `media/`.
 | `pnpm payload migrate` | Apply pending migrations |
 | `pnpm generate:types` | Regenerate `src/payload-types.ts` |
 | `pnpm generate:importmap` | Regenerate the admin import map after adding admin components |
-| `pnpm create:admin` | Create or reset an administrator (`ADMIN_EMAIL`, `ADMIN_PASSWORD`) |
+| `pnpm create:admin` | Add or re-activate an administrator (`ADMIN_EMAIL`, optional `ADMIN_NAME`) |
 
 ## Architecture
 
@@ -69,6 +71,15 @@ Pages have `generateStaticParams` returning `[]`: each page renders on its first
 is cached until content changes. `src/hooks/revalidate.ts` purges the cache on every
 publish, unpublish or delete, so new content shows up on the next request. The Docker build
 needs no database.
+
+### Sign-in
+
+- Passwordless via Better Auth (`src/lib/auth/server.ts`, mounted at `/api/auth/*`) with
+  the magic-link plugin; emails go out through Resend (`src/lib/auth/email.ts`).
+- Who may sign in is the Payload `users` collection: a link is sent only to an active user,
+  and `src/lib/auth/strategy.ts` (a Payload auth strategy) maps the Better Auth session to
+  that user on every request. Roles and permissions stay in Payload.
+- Better Auth's tables (`ba_*`) are created by a Payload migration like everything else.
 
 ### Preview
 

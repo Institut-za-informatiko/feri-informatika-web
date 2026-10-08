@@ -7,8 +7,8 @@ a built-in Payload CMS for editors.
 
 ## For editors
 
-Log in at `/admin` with the email and password an administrator created for you. Changes
-are live as soon as you publish. See [CMS_GUIDE.md](CMS_GUIDE.md).
+Sign in at `/admin` with the link we email you (no password); an administrator adds you
+first. Changes are live as soon as you publish. See [CMS_GUIDE.md](CMS_GUIDE.md).
 
 ## For developers
 
