@@ -1,4 +1,5 @@
 import { CalendarIcon } from 'lucide-react';
+import Link from 'next/link';
 import { type ReactNode, Suspense } from 'react';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -58,7 +59,7 @@ export function ImageCard({
   children?: ReactNode;
 }) {
   return (
-    <a
+    <Link
       href={href}
       className="group flex w-full rounded-xl focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
     >
@@ -95,7 +96,7 @@ export function ImageCard({
           )}
         </CardHeader>
       </Card>
-    </a>
+    </Link>
   );
 }
 

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import {
   Card,
@@ -69,7 +70,7 @@ export function ProgrammeCard({
   lang: Lang;
 }) {
   return (
-    <a
+    <Link
       href={localePath(lang, `/studies/programmes/${p.slug}`)}
       className={cardLink}
     >
@@ -89,7 +90,7 @@ export function ProgrammeCard({
           {durationLabel(p.duration, lang)} · {p.ects} ECTS
         </CardFooter>
       </Card>
-    </a>
+    </Link>
   );
 }
 
@@ -101,7 +102,7 @@ export function StudentProjectCard({
   lang: Lang;
 }) {
   return (
-    <a
+    <Link
       href={localePath(lang, `/studies/student-projects/${p.slug}`)}
       className={cardLink}
     >
@@ -120,6 +121,6 @@ export function StudentProjectCard({
           <span className="tabular-nums">{p.year}</span>
         </CardFooter>
       </Card>
-    </a>
+    </Link>
   );
 }

@@ -1,5 +1,6 @@
 import { cn } from 'cn';
 import { ArrowLeftIcon, ArrowRightIcon, ArrowUpRightIcon } from 'lucide-react';
+import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { buttonVariants } from '@/components/ui/button';
 
@@ -35,7 +36,7 @@ export function BackLink({
   children: ReactNode;
 }) {
   return (
-    <a
+    <Link
       href={href}
       className={cn(
         buttonVariants({ variant: 'outline' }),
@@ -44,7 +45,7 @@ export function BackLink({
     >
       <ArrowLeftIcon data-icon="inline-start" />
       {children}
-    </a>
+    </Link>
   );
 }
 
@@ -62,13 +63,13 @@ export function ArrowLinkList({
     <ul className="flex flex-col divide-y rounded-xl border bg-card">
       {items.map((item) => (
         <li key={item.key}>
-          <a
+          <Link
             href={item.href}
             className="group flex items-center gap-3 px-4 py-3.5 font-medium text-foreground transition-colors hover:text-primary focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
           >
             <ArrowRightIcon className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" />
             <span className="min-w-0 break-words">{item.label}</span>
-          </a>
+          </Link>
         </li>
       ))}
     </ul>
@@ -84,7 +85,7 @@ export function ExternalLinkButton({
   children: ReactNode;
 }) {
   return (
-    <a
+    <Link
       href={href}
       target="_blank"
       rel="noopener noreferrer"
@@ -95,7 +96,7 @@ export function ExternalLinkButton({
     >
       {children}
       <ArrowUpRightIcon data-icon="inline-end" />
-    </a>
+    </Link>
   );
 }
 

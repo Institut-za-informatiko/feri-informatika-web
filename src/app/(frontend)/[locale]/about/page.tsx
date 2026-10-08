@@ -1,4 +1,5 @@
 import { GlobeIcon, MailIcon, MapPinIcon, PhoneIcon } from 'lucide-react';
+import Link from 'next/link';
 import { aboutSidebar } from '@/components/aboutNav';
 import { Section, SectionNews } from '@/components/cards';
 import { DetailList } from '@/components/details';
@@ -49,12 +50,12 @@ export default async function AboutPage({ params }: Props) {
                     label: t('about.email'),
                     icon: <MailIcon className={icon} />,
                     value: about.contactEmail && (
-                      <a
+                      <Link
                         href={`mailto:${about.contactEmail}`}
                         className="text-primary hover:underline"
                       >
                         {about.contactEmail}
-                      </a>
+                      </Link>
                     ),
                   },
                   {
@@ -71,12 +72,12 @@ export default async function AboutPage({ params }: Props) {
                     label: t('about.web'),
                     icon: <GlobeIcon className={icon} />,
                     value: about.contactWebsite && (
-                      <a
+                      <Link
                         href={about.contactWebsite}
                         className="text-primary hover:underline"
                       >
                         {about.contactWebsite.replace(/^https?:\/\//, '')}
-                      </a>
+                      </Link>
                     ),
                   },
                 ]}

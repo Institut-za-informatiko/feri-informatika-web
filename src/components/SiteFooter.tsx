@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { getTranslations, type Lang } from '@/i18n/translations';
 import { findGlobal } from '@/lib/payload';
 
@@ -17,12 +18,12 @@ export async function SiteFooter({ lang }: { lang: Lang }) {
           {about.contactAddress && <li>{about.contactAddress}</li>}
           {about.contactEmail && (
             <li>
-              <a
+              <Link
                 className="underline-offset-4 hover:underline"
                 href={`mailto:${about.contactEmail}`}
               >
                 {about.contactEmail}
-              </a>
+              </Link>
             </li>
           )}
           {about.contactPhone && <li>{about.contactPhone}</li>}

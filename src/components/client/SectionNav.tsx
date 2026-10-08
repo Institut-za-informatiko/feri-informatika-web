@@ -2,6 +2,7 @@
 
 import { cn } from 'cn';
 import { ChevronDownIcon } from 'lucide-react';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { buttonVariants } from '@/components/ui/button';
 import {
@@ -40,7 +41,7 @@ export function SectionNav({
           (link.children ?? []).some((c) => isCurrent(c.href));
         return (
           <div key={link.href} className="flex flex-col gap-0.5">
-            <a
+            <Link
               href={link.href}
               aria-current={isCurrent(link.href) ? 'page' : undefined}
               className={cn(
@@ -50,11 +51,11 @@ export function SectionNav({
               )}
             >
               {link.label}
-            </a>
+            </Link>
             {open && link.children && (
               <div className="ml-3 flex flex-col gap-0.5 border-l pl-2">
                 {link.children.map((child) => (
-                  <a
+                  <Link
                     key={child.href}
                     href={child.href}
                     aria-current={isCurrent(child.href) ? 'page' : undefined}
@@ -65,7 +66,7 @@ export function SectionNav({
                     )}
                   >
                     {child.label}
-                  </a>
+                  </Link>
                 ))}
               </div>
             )}

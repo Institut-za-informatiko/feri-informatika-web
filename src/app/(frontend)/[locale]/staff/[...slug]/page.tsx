@@ -7,6 +7,7 @@ import {
   MailIcon,
   PhoneIcon,
 } from 'lucide-react';
+import Link from 'next/link';
 import { aboutSidebar } from '@/components/aboutNav';
 import { Section, SectionNews } from '@/components/cards';
 import { BackLink, DetailList, ExternalLinkButton } from '@/components/details';
@@ -40,7 +41,7 @@ export async function generateMetadata({ params }: Props) {
 
 function ExternalLink({ href, children }: { href: string; children: string }) {
   return (
-    <a
+    <Link
       href={href}
       target="_blank"
       rel="noopener noreferrer"
@@ -48,7 +49,7 @@ function ExternalLink({ href, children }: { href: string; children: string }) {
     >
       {children}
       <ArrowUpRightIcon className="size-3.5" />
-    </a>
+    </Link>
   );
 }
 
@@ -88,12 +89,12 @@ export default async function StaffProfilePage({ params }: Props) {
                   label: t('staff.email'),
                   icon: <MailIcon className={icon} />,
                   value: person.email && (
-                    <a
+                    <Link
                       href={`mailto:${person.email}`}
                       className="text-primary hover:underline"
                     >
                       {person.email}
-                    </a>
+                    </Link>
                   ),
                 },
                 {
