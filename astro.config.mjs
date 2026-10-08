@@ -27,8 +27,8 @@ function repoFullReloadPlugin() {
 }
 
 export default defineConfig({
-  site: process.env.SITE_URL ?? 'https://institut-za-informatiko.github.io',
-  base: process.env.BASE_PATH ?? '/feri-informatika-web',
+  site: process.env.SITE_URL ?? 'https://ii-preview.bclabum.si',
+  base: process.env.BASE_PATH ?? '/',
   i18n: {
     defaultLocale: 'sl',
     locales: ['sl', 'en'],

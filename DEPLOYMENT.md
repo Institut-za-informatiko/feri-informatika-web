@@ -1,17 +1,12 @@
 # Deployment
 
-| Target | URL | Workflow |
-|---|---|---|
-| bclabum (Docker) | https://ii-preview.bclabum.si | `.github/workflows/deploy-bclabum.yml` |
-| GitHub Pages | https://institut-za-informatiko.github.io/feri-informatika-web | `.github/workflows/deploy.yml` |
-
-Both deploy on every push to `main`.
+The site runs on bclabum at https://ii-preview.bclabum.si and deploys on every push to
+`main` via `.github/workflows/deploy-bclabum.yml`.
 
 ## Base path
 
-`astro.config.mjs` reads `SITE_URL` and `BASE_PATH` from the environment. Without them the
-build targets GitHub Pages (`/feri-informatika-web`). The Dockerfile sets `BASE_PATH=/`, so the
-image serves the site from the domain root.
+`astro.config.mjs` reads `SITE_URL` and `BASE_PATH` from the environment and defaults to
+`https://ii-preview.bclabum.si` served from `/`.
 
 In code, always build links from the base, never hardcode it:
 
@@ -22,7 +17,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 ## bclabum pipeline
 
-1. `image` job builds the Dockerfile. Pull requests stop here (build check only).
+1. `lint` runs `pnpm lint:ci`; `image` builds the Dockerfile. Pull requests stop here (build check only).
    On `main` the image is pushed to `ghcr.io/institut-za-informatiko/feri-informatika-web`
    as `sha-<commit>` and `latest`.
 2. `deploy` job SSHes to bclabum with `BCLABUM_DEPLOY_KEY`. On the server that key may only run

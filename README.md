@@ -6,7 +6,7 @@ A professional website for the Institute of Informatics (FERI, University of Mar
 
 A professional institutional website with full bilingual support (Slovenian + English) and content management through a graphical interface, no coding required.
 
-**Live website:** https://institut-za-informatiko.github.io/feri-informatika-web
+**Live website:** https://ii-preview.bclabum.si
 **CMS (editing):** `/admin` (free access via Sveltia CMS)
 
 ##  What's on the website?
@@ -25,7 +25,7 @@ A professional institutional website with full bilingual support (Slovenian + En
 
 ### For Editors
 
-1. Go to **https://institut-za-informatiko.github.io/feri-informatika-web/admin**
+1. Go to **https://ii-preview.bclabum.si/admin**
 2. Login with GitHub account (must be repo contributor)
 3. Select a collection (e.g., "News", "Achievements", "Staff")
 4. Add, edit or delete content
@@ -43,7 +43,7 @@ pnpm install
 
 # Local development server
 pnpm dev
-# Access: http://localhost:4321/feri-informatika-web
+# Access: http://localhost:4321
 
 # Production build
 pnpm build
@@ -93,9 +93,9 @@ public/
 1. **Editor** edits content in CMS (`/admin`)
 2. **GitHub Actions** automatically submits changes (push)
 3. **Astro** rebuilds static HTML files
-4. **GitHub Pages** serves the public website
+4. A Docker image is built and deployed to bclabum (see [DEPLOYMENT.md](DEPLOYMENT.md))
 
-No server, database or infrastructure needed. Everything is static.
+No database or backend. The site is static HTML served by nginx.
 
 ##  Security
 
@@ -109,7 +109,7 @@ No server, database or infrastructure needed. Everything is static.
 - **Astro 6.3.5** — Static site generator
 - **Sveltia CMS** — Headless CMS (no backend)
 - **GitHub** — Hosting & authentication
-- **GitHub Pages** — Public deployment
+- **Docker + nginx on bclabum** — Public deployment
 - **Markdown** — Content format
 
 ##  Documentation
