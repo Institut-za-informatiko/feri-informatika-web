@@ -39,6 +39,20 @@ export async function isAllowedEmail(email: string): Promise<boolean> {
   return totalDocs > 0;
 }
 
+/**
+ * Mail scanners (Microsoft Defender Safe Links and others) open every link in an email to
+ * check it, which would use up the single-use token before the person clicks. So the email
+ * links to the login page, and the token is only spent when the person presses "confirm".
+ */
+function confirmationURL(verifyURL: string) {
+  const verify = new URL(verifyURL);
+  const confirm = new URL('/admin/login', serverURL);
+  confirm.searchParams.set('token', verify.searchParams.get('token') ?? '');
+  const callback = verify.searchParams.get('callbackURL');
+  if (callback) confirm.searchParams.set('redirect', callback);
+  return confirm.toString();
+}
+
 /** Short device name for the passkey list ("Mac", "iPhone", …) from the registering browser. */
 function deviceLabel(userAgent?: string | null) {
   const ua = userAgent ?? '';
@@ -90,7 +104,7 @@ export const auth = betterAuth({
       sendMagicLink: async ({ email, url }) => {
         // Unknown addresses get the same response as known ones (no account enumeration).
         if (!(await isAllowedEmail(email))) return;
-        await sendMagicLinkEmail({ to: email, url });
+        await sendMagicLinkEmail({ to: email, url: confirmationURL(url) });
       },
     }),
     // Passkeys are added after a first magic-link sign-in and are bound to this host name.

@@ -21,6 +21,9 @@ const copy = {
     failed: 'Pošiljanje ni uspelo. Poskusite znova čez nekaj minut.',
     linkError:
       'Povezava je potekla ali je že bila uporabljena. Zahtevajte novo.',
+    confirmTitle: 'Potrdite prijavo',
+    confirmIntro: 'Kliknite gumb za prijavo v CMS.',
+    confirm: 'Prijava',
     or: 'ali',
     passkey: 'Prijava s passkeyjem',
     passkeyFailed:
@@ -40,6 +43,9 @@ const copy = {
     change: 'Use a different address',
     failed: 'Sending failed. Please try again in a few minutes.',
     linkError: 'The link has expired or was already used. Request a new one.',
+    confirmTitle: 'Confirm sign-in',
+    confirmIntro: 'Click the button to sign in to the CMS.',
+    confirm: 'Sign in',
     or: 'or',
     passkey: 'Sign in with a passkey',
     passkeyFailed: 'Passkey sign-in failed. Use the emailed link instead.',
@@ -58,9 +64,11 @@ export function MagicLinkLogin() {
 
   const [passkeyError, setPasskeyError] = useState(false);
   const target = params.get('redirect') || '/admin';
+  const token = params.get('token');
 
   // Offer saved passkeys in the email field's autofill as soon as the page opens.
   useEffect(() => {
+    if (token) return;
     let cancelled = false;
     (async () => {
       if (!(await PublicKeyCredential?.isConditionalMediationAvailable?.()))
@@ -71,7 +79,7 @@ export function MagicLinkLogin() {
     return () => {
       cancelled = true;
     };
-  }, [target]);
+  }, [target, token]);
 
   const signInWithPasskey = async () => {
     setPasskeyError(false);
@@ -95,6 +103,30 @@ export function MagicLinkLogin() {
     e.preventDefault();
     send();
   };
+
+  // Arrived from the email: spend the single-use token only on an explicit click, so mail
+  // scanners that open links in advance cannot use it up.
+  if (token) {
+    const verify = new URLSearchParams({
+      token,
+      callbackURL: target,
+      errorCallbackURL: '/admin/login?error=link',
+    });
+    return (
+      <div style={{ display: 'grid', gap: 'calc(var(--base) * 0.75)' }}>
+        <h2 style={{ margin: 0 }}>{t.confirmTitle}</h2>
+        <p style={{ margin: 0 }}>{t.confirmIntro}</p>
+        <Button
+          type="button"
+          onClick={() =>
+            window.location.assign(`/api/auth/magic-link/verify?${verify}`)
+          }
+        >
+          {t.confirm}
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <form
