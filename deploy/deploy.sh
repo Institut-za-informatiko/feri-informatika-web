@@ -1,6 +1,7 @@
 #!/bin/sh
 # Forced command for the CI deploy key on bclabum (see DEPLOYMENT.md).
-# Pulls the image tag passed by CI and restarts the container.
+# Pulls the image tag passed by CI and restarts the container. CI pipes its short-lived
+# GITHUB_TOKEN on stdin so the GHCR package can stay private.
 set -eu
 
 cd "$(dirname "$0")"
@@ -12,6 +13,9 @@ case "$tag" in
 esac
 
 export IMAGE_TAG="$tag"
+export DOCKER_CONFIG="$(mktemp -d)"
+trap 'rm -rf "$DOCKER_CONFIG"' EXIT
+docker login ghcr.io -u github-actions --password-stdin >/dev/null
 docker compose pull --quiet
 docker compose up -d --remove-orphans
 

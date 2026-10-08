@@ -67,13 +67,15 @@ jobs:
         env:
           SSH_KEY: ${{ secrets.BCLABUM_DEPLOY_KEY }}
           KNOWN_HOSTS: ${{ secrets.BCLABUM_KNOWN_HOSTS }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           install -m 700 -d ~/.ssh
           printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
-          # The key is restricted to deploy.sh on the server; the argument is the image tag.
-          ssh -i ~/.ssh/deploy_key urban@157.180.6.182 "sha-${GITHUB_SHA}"
+          # The key is restricted to deploy.sh on the server; the argument is the image tag,
+          # stdin carries this job's token for the GHCR pull.
+          printf '%s' "$GHCR_TOKEN" | ssh -i ~/.ssh/deploy_key urban@157.180.6.182 "sha-${GITHUB_SHA}"
 
       - name: Smoke test
         run: |
