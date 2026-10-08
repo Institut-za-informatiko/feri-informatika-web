@@ -8,7 +8,7 @@ coverImage: '@/assets/media/achievement_plemiska-heraldika.jpg'
 images:
   - '@/assets/media/achievement_plemiska-heraldika_2.jpg'
 videos:
-  - '/feri-informatika-web/assets/media/plemiska-heraldika.mp4'
+  - '/assets/media/plemiska-heraldika.mp4'
 ---
 
 Spletna rešitev slovenske plemiške heraldike ponuja bogato zbirko več kot 300 grbov nekdanjih plemiških rodbin, ki jih še danes najdemo v slovenskem prostoru.

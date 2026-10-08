@@ -8,7 +8,7 @@ coverImage: '@/assets/media/achievement_plemiska-dediscina.jpg'
 images:
   - '@/assets/media/achievement_plemiska-dediscina_2.jpg'
 videos:
-  - '/feri-informatika-web/assets/media/plemiska-dediscina.mp4'
+  - '/assets/media/plemiska-dediscina.mp4'
 ---
 
 Spletna rešitev slovenske plemiške dediščine predstavlja bogato zbirko gradov, dvorcev in plemiških rodbin, ki so živeli v slovenskem prostoru.

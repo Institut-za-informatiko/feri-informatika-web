@@ -4,7 +4,7 @@ import SectionNews from "../../components/SectionNews.astro";
 import { getCollection } from "astro:content";
 
 const groups = await getCollection("interestGroups");
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const sidebarLinks = [
   { label: "Laboratoriji",    href: `${base}/laboratories` },

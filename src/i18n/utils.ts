@@ -1,6 +1,6 @@
 import { defaultLang, type Lang } from './translations';
 
-const BASE = '/feri-informatika-web';
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 export function localePath(lang: Lang, path: string): string {
   const prefix = lang === defaultLang ? '' : `/${lang}`;
@@ -23,7 +23,13 @@ export function getAlternateUrl(currentUrl: URL, currentLang: Lang): string {
 export function getNavLinks(lang: Lang) {
   return [
     { key: 'nav.about', href: localePath(lang, '/about') },
-    { key: 'nav.research', href: localePath(lang, lang === 'en' ? '/research/projects' : '/research/group') },
+    {
+      key: 'nav.research',
+      href: localePath(
+        lang,
+        lang === 'en' ? '/research/projects' : '/research/group'
+      ),
+    },
     { key: 'nav.studies', href: localePath(lang, '/studies/programmes') },
     { key: 'nav.conferences', href: localePath(lang, '/conferences') },
     { key: 'nav.industry', href: localePath(lang, '/industry') },

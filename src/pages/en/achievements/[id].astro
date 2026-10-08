@@ -15,6 +15,7 @@ const lang = "en";
 const t = useTranslations(lang);
 const { achievement } = Astro.props;
 const { Content } = await render(achievement);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const galleryImages = achievement.data.images ?? [];
 ---
@@ -94,7 +95,7 @@ const galleryImages = achievement.data.images ?? [];
               height="auto" 
               controls 
               style="display:block; max-width:100%;">
-              <source src={videoUrl} type="video/mp4" />
+              <source src={videoUrl.startsWith("/") && !videoUrl.startsWith("//") ? `${base}${videoUrl}` : videoUrl} type="video/mp4" />
               Your browser does not support HTML5 videos.
             </video>
           </div>

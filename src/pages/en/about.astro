@@ -9,7 +9,7 @@ import { resolve } from "path";
 
 const lang = "en";
 const t = useTranslations(lang);
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const sidebarLinks = [
   { label: t("about.sidebar.labs"),   href: localePath(lang, "/laboratories") },
