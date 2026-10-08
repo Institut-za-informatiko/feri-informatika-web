@@ -10,7 +10,15 @@ For editors and content managers. **No coding required.**
    for 15 minutes and works once. You stay signed in for 7 days.
 
 There are no passwords. Only addresses an administrator has added can sign in; if no email
-arrives, ask an administrator to check your account.
+arrives, check your junk folder, then ask an administrator to check your account.
+
+### Passkeys (faster sign-in)
+
+After your first sign-in, open your account (avatar, bottom left → **Account**) and click
+**Dodaj passkey**. Your phone or computer saves it with Face ID, Touch ID, Windows Hello or a
+security key. Next time the login page offers the passkey right in the email field: one tap
+and you are in. You can remove passkeys on the same page. Passkeys are tied to the site's
+address; if the site moves to a new domain, add them again.
 
 ## Roles
 

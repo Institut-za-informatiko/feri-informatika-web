@@ -79,7 +79,11 @@ needs no database.
 - Who may sign in is the Payload `users` collection: a link is sent only to an active user,
   and `src/lib/auth/strategy.ts` (a Payload auth strategy) maps the Better Auth session to
   that user on every request. Roles and permissions stay in Payload.
-- Better Auth's tables (`ba_*`) are created by a Payload migration like everything else.
+- Passkeys (`@better-auth/passkey`) are registered from the user's own account page
+  (`PasskeyManager`) and offered by the browser on the login page (conditional mediation).
+  The WebAuthn relying party is the host of `SERVER_URL`; the client never sends a passkey
+  `name`, because the plugin would store it as the WebAuthn user name instead of the email.
+- Better Auth's tables (`ba_*`) are created by Payload migrations like everything else.
 
 ### Preview
 

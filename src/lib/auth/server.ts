@@ -1,3 +1,4 @@
+import { passkey } from '@better-auth/passkey';
 import { betterAuth } from 'better-auth';
 import { nextCookies } from 'better-auth/next-js';
 import { magicLink } from 'better-auth/plugins';
@@ -36,6 +37,18 @@ export async function isAllowedEmail(email: string): Promise<boolean> {
     },
   });
   return totalDocs > 0;
+}
+
+/** Short device name for the passkey list ("Mac", "iPhone", …) from the registering browser. */
+function deviceLabel(userAgent?: string | null) {
+  const ua = userAgent ?? '';
+  if (/iPhone/.test(ua)) return 'iPhone';
+  if (/iPad/.test(ua)) return 'iPad';
+  if (/Android/.test(ua)) return 'Android';
+  if (/Macintosh/.test(ua)) return 'Mac';
+  if (/Windows/.test(ua)) return 'Windows';
+  if (/Linux/.test(ua)) return 'Linux';
+  return 'Passkey';
 }
 
 export const auth = betterAuth({
@@ -78,6 +91,21 @@ export const auth = betterAuth({
         // Unknown addresses get the same response as known ones (no account enumeration).
         if (!(await isAllowedEmail(email))) return;
         await sendMagicLinkEmail({ to: email, url });
+      },
+    }),
+    // Passkeys are added after a first magic-link sign-in and are bound to this host name.
+    // The authenticator stores the account as the user's email (the client must not send a
+    // `name`: the plugin would use it as the WebAuthn user name); the label shown in the CMS
+    // is set here instead.
+    passkey({
+      rpID: new URL(serverURL).hostname,
+      rpName: 'Inštitut za informatiko — CMS',
+      origin: serverURL,
+      schema: { passkey: { modelName: 'ba_passkey' } },
+      registration: {
+        afterVerification: ({ ctx }) => ({
+          name: deviceLabel(ctx.headers?.get('user-agent')),
+        }),
       },
     }),
     // Lets server actions / route handlers set the session cookie (Better Auth docs, Next.js).
