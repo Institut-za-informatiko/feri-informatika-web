@@ -11,7 +11,8 @@ const editorAccess = {
 
 /** Collections with drafts: the public API only returns published documents. */
 const draftable = {
-  versions: { drafts: true, maxPerDoc: 25 },
+  // Autosave keeps Live Preview in step with typing; publishing stays a separate click.
+  versions: { drafts: { autosave: { interval: 800 } }, maxPerDoc: 25 },
   access: { ...editorAccess, read: publishedOrLoggedIn },
 } satisfies Partial<CollectionConfig>;
 

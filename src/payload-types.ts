@@ -1138,6 +1138,7 @@ export interface About {
     };
     [k: string]: unknown;
   } | null;
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1162,6 +1163,7 @@ export interface ResearchGroup {
     };
     [k: string]: unknown;
   } | null;
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1189,6 +1191,7 @@ export interface AboutSelect<T extends boolean = true> {
   contactPhone?: T;
   contactWebsite?: T;
   body?: T;
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1199,6 +1202,7 @@ export interface AboutSelect<T extends boolean = true> {
  */
 export interface ResearchGroupSelect<T extends boolean = true> {
   body?: T;
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

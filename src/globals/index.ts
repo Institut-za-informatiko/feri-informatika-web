@@ -1,16 +1,27 @@
-import type { Field, GlobalConfig } from 'payload';
+import type { Field, GlobalConfig, PayloadRequest } from 'payload';
 import { anyone, isLoggedIn } from '../access';
 import { bodyField } from '../fields';
 import { revalidateGlobal } from '../hooks/revalidate';
 
 const access = { read: anyone, update: isLoggedIn };
+
+/** Draft text is only for logged-in editors (Live Preview); visitors get the published version. */
+const draftAccess = {
+  read: ({ req }: { req: PayloadRequest }) =>
+    Boolean(req.user) || req.query?.draft !== 'true',
+  update: isLoggedIn,
+};
+const drafts = {
+  versions: { drafts: { autosave: { interval: 800 } }, max: 25 },
+};
 const hooks = { afterChange: [revalidateGlobal] };
 
 export const About: GlobalConfig = {
   slug: 'about',
   label: 'O inštitutu',
   admin: { group: 'Strani' },
-  access,
+  access: draftAccess,
+  ...drafts,
   hooks,
   fields: [
     {
@@ -39,7 +50,8 @@ export const ResearchGroup: GlobalConfig = {
   slug: 'research-group',
   label: 'Raziskovalna skupina',
   admin: { group: 'Strani' },
-  access,
+  access: draftAccess,
+  ...drafts,
   hooks,
   fields: [bodyField],
 };
