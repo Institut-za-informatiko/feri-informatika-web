@@ -24,32 +24,29 @@ Administrators add people under **Administracija → Uporabniki → Create New**
 
 | Group | Collection | Where it appears |
 |---|---|---|
-| Vsebina | **Novice** | /news, homepage |
+| Vsebina | **Novice** | /news, home page, "latest news" boxes |
 | Vsebina | **Dosežki** | /achievements |
 | Vsebina | **Osebje** | /staff |
 | Vsebina | **Mediji** | Images used anywhere on the site |
 | Raziskovanje | **Laboratoriji**, **Projekti**, **Konference**, **Etična mnenja** | /laboratories, /research, /conferences |
 | Študij | **Študijski programi**, **Študentski projekti**, **Interesne skupine** | /studies, /interest-groups |
 | Sodelovanje | **Industrijski partnerji** | /industry |
-| Naslovnica | **Drsniki**, **Izpostavljeno** | Homepage slider and highlighted items |
-| Strani | **O inštitutu**, **Raziskovalna skupina** | /about, /research/group |
+| Naslovnica | **Drsniki**, **Izpostavljeno** | Home page slider and highlighted items |
+| Strani | **O inštitutu**, **Raziskovalna skupina**, **Strani** | /about, /research/group, publications, ethics pages, … |
 
-## Drafts and publishing
+## Drafts, preview and publishing
 
-News, achievements and staff have **drafts**:
+News, achievements, staff and pages have **drafts**:
 
 - **Save Draft** stores your changes privately. Nothing changes on the website.
-- **Publish changes** makes them public.
+- **Live Preview** (button at the top of the editor) shows the real page next to the form
+  and updates as you type. Switch between phone, tablet and desktop width there.
+- **Preview** opens the draft page in a new tab.
+- **Publish changes** makes them public. The website shows them **immediately**.
 - **Unpublish** (in the ⋯ menu) takes an entry off the website without deleting it.
 - **Versions** (tab at the top of an entry) shows earlier versions and lets you restore one.
 
 Other collections have no drafts: **Save** publishes immediately.
-
-## When do changes appear on the website?
-
-The public website is pre-built for speed. After you publish, the CMS waits **60 seconds**
-(so several quick edits become one update), then the site is rebuilt and deployed.
-Expect the change online **about 3–5 minutes** after your last save.
 
 ## Slovenian and English
 
@@ -68,7 +65,7 @@ Use the language switcher at the top of an entry (**Slovenščina / English**):
 2. Fill in **Naslov**, **Povzetek** and **Vsebina**. Set **Datum** and **Oznake** in the sidebar.
 3. **Naslovna slika**: upload or pick an image. **Galerija**: add more images.
 4. **Slug (URL)** fills in from the title if you leave it empty.
-5. **Publish changes**.
+5. Check it in **Live Preview**, then **Publish changes**.
 
 ### Add a staff member
 
@@ -79,7 +76,12 @@ Use the language switcher at the top of an entry (**Slovenščina / English**):
    each with a heading and rich text.
 4. **Publish changes**.
 
-### Change what is highlighted on the homepage
+### Edit a text page (publications, ethics committee, …)
+
+**Strani**: open the page by its title. **Pot (URL)** is its address on the site; don't change
+it unless you also want the address to change.
+
+### Change what is highlighted on the home page
 
 **Naslovnica → Izpostavljeno**: pick 2–5 news items, 2–3 achievements and 2–3 projects.
 
@@ -93,7 +95,7 @@ Use the language switcher at the top of an entry (**Slovenščina / English**):
 ### Videos
 
 Achievements accept video links (**Videoposnetki**): either a full URL (e.g. YouTube) or a
-path to a file in the repository, such as `/assets/media/video.mp4`.
+path to a file on the site, such as `/assets/media/video.mp4`.
 
 ## Need help?
 
