@@ -18,6 +18,27 @@ import {
 } from './lib/preview';
 import { migrations } from './migrations';
 
+/**
+ * SL/EN tabs in the header of every localized document. `field` is the localized field that
+ * tells whether a locale has its own text (titles that are not localized need another one).
+ */
+const translationField: Record<string, string> = {
+  staff: 'role',
+  'industry-partners': 'description',
+  'ethics-opinions': 'research',
+  media: 'alt',
+  about: 'title',
+  'research-group': 'body',
+};
+const localeTabs = (slug: string) => ({
+  beforeDocumentControls: [
+    {
+      path: '@/components/admin/LocaleTabs#LocaleTabs',
+      clientProps: { field: translationField[slug] },
+    },
+  ],
+});
+
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const serverURL = process.env.SERVER_URL || 'http://localhost:3000';
 
@@ -73,19 +94,35 @@ export default buildConfig({
     fallback: true,
   },
   // "Preview" button on every collection that has a public page.
-  collections: [...contentCollections, Media, Users].map((c) =>
-    hasCollectionPreview(c.slug)
-      ? {
-          ...c,
+  collections: [...contentCollections, Media, Users].map((c) => ({
+    ...c,
+    admin: {
+      ...c.admin,
+      ...(hasCollectionPreview(c.slug) && {
+        preview: (
+          doc: Record<string, unknown>,
+          { locale }: { locale: string }
+        ) => collectionPreviewUrl(c.slug, doc, locale),
+      }),
+      ...(c.slug !== 'users' && {
+        components: { ...c.admin?.components, edit: localeTabs(c.slug) },
+      }),
+    },
+  })),
+  globals: globals.map((g) =>
+    g.slug === 'highlighted'
+      ? g
+      : {
+          ...g,
           admin: {
-            ...c.admin,
-            preview: (doc, { locale }) =>
-              collectionPreviewUrl(c.slug, doc, locale),
+            ...g.admin,
+            components: {
+              ...g.admin?.components,
+              elements: localeTabs(g.slug),
+            },
           },
         }
-      : c
   ),
-  globals,
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   csrf: [serverURL],
