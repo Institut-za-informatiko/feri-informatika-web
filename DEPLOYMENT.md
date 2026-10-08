@@ -62,7 +62,7 @@ scp docker-compose.yml deploy/deploy.sh deploy/backup.sh .env urban@157.180.6.18
 | `POSTGRES_PASSWORD` | Database |
 | `PREVIEW_SECRET` | Required by `/next/preview` to enable draft mode |
 | `BETTER_AUTH_SECRET` | Signs CMS sessions (Better Auth); changing it logs everyone out |
-| `RESEND_API_KEY`, `MAIL_FROM` | Sends sign-in links via Resend from `noreply@cms.bclabum.si` (domain verified in Resend) |
+| `RESEND_API_KEY`, `MAIL_FROM` | Sends sign-in codes via Resend from `noreply@cms.bclabum.si` (domain verified in Resend) |
 | `ADMIN_EMAIL` | First administrator (`pnpm create:admin`) |
 
 ## Backups
@@ -84,7 +84,7 @@ docker run --rm --volumes-from feri-informatika-web -v "$PWD/backups:/backups" a
 
 ## Admin accounts
 
-Sign-in is passwordless (magic link). To add or re-activate an administrator when nobody can
+Sign-in is passwordless (emailed code or passkey). To add or re-activate an administrator when nobody can
 sign in, run from a checkout with access to the database:
 
 ```sh

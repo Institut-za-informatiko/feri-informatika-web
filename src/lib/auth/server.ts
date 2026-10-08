@@ -1,12 +1,12 @@
 import { passkey } from '@better-auth/passkey';
 import { betterAuth } from 'better-auth';
 import { nextCookies } from 'better-auth/next-js';
-import { magicLink } from 'better-auth/plugins';
+import { emailOTP } from 'better-auth/plugins';
 import { Pool } from 'pg';
-import { sendMagicLinkEmail } from './email';
+import { sendSignInCodeEmail } from './email';
 
 /**
- * Passwordless sign-in for the CMS. Better Auth issues the one-time links and the session
+ * Passwordless sign-in for the CMS. Better Auth emails a one-time code and issues the session
  * cookie; who may sign in, and with which role, is decided by the Payload `users` collection
  * (see isAllowedEmail and ./strategy.ts).
  */
@@ -37,20 +37,6 @@ export async function isAllowedEmail(email: string): Promise<boolean> {
     },
   });
   return totalDocs > 0;
-}
-
-/**
- * Mail scanners (Microsoft Defender Safe Links and others) open every link in an email to
- * check it, which would use up the single-use token before the person clicks. So the email
- * links to the login page, and the token is only spent when the person presses "confirm".
- */
-function confirmationURL(verifyURL: string) {
-  const verify = new URL(verifyURL);
-  const confirm = new URL('/admin/login', serverURL);
-  confirm.searchParams.set('token', verify.searchParams.get('token') ?? '');
-  const callback = verify.searchParams.get('callbackURL');
-  if (callback) confirm.searchParams.set('redirect', callback);
-  return confirm.toString();
 }
 
 /** Short device name for the passkey list ("Mac", "iPhone", …) from the registering browser. */
@@ -85,7 +71,8 @@ export const auth = betterAuth({
   rateLimit: {
     enabled: true,
     customRules: {
-      '/sign-in/magic-link': { window: 5 * 60, max: 5 },
+      '/email-otp/send-verification-otp': { window: 5 * 60, max: 5 },
+      '/sign-in/email-otp': { window: 5 * 60, max: 10 },
     },
   },
   databaseHooks: {
@@ -99,15 +86,21 @@ export const auth = betterAuth({
     },
   },
   plugins: [
-    magicLink({
-      expiresIn: 15 * 60,
-      sendMagicLink: async ({ email, url }) => {
+    // A typed code instead of a link: Microsoft Defender (UM mail) opens and clicks every
+    // link in an email, which used up single-use links before the person could.
+    emailOTP({
+      otpLength: 6,
+      expiresIn: 10 * 60,
+      allowedAttempts: 3,
+      storeOTP: 'hashed',
+      sendVerificationOTP: async ({ email, otp, type }) => {
+        if (type !== 'sign-in') return;
         // Unknown addresses get the same response as known ones (no account enumeration).
         if (!(await isAllowedEmail(email))) return;
-        await sendMagicLinkEmail({ to: email, url: confirmationURL(url) });
+        await sendSignInCodeEmail({ to: email, code: otp });
       },
     }),
-    // Passkeys are added after a first magic-link sign-in and are bound to this host name.
+    // Passkeys are added after a first sign-in with a code and are bound to this host name.
     // The authenticator stores the account as the user's email (the client must not send a
     // `name`: the plugin would use it as the WebAuthn user name); the label shown in the CMS
     // is set here instead.

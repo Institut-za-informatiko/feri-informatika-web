@@ -27,8 +27,8 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     components: {
-      // Passwordless sign-in (Better Auth magic link) in place of the password form.
-      beforeLogin: ['@/components/admin/MagicLinkLogin#MagicLinkLogin'],
+      // Passwordless sign-in (emailed code or passkey) in place of the password form.
+      beforeLogin: ['@/components/admin/SignInForm#SignInForm'],
       graphics: {
         Logo: '@/components/admin/Brand#Logo',
         Icon: '@/components/admin/Brand#Icon',

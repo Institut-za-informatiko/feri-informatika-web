@@ -5,9 +5,13 @@ For editors and content managers. **No coding required.**
 ## How to log in
 
 1. Open **https://ii-preview.bclabum.si/admin**
-2. Enter your **email address** and click **Pošlji povezavo**.
-3. Open the email from *noreply@cms.bclabum.si* and click **Prijava**. The link is valid
-   for 15 minutes and works once. You stay signed in for 7 days.
+2. Enter your **email address** and click **Pošlji kodo**.
+3. Open the email from *noreply@cms.bclabum.si* (**check the Junk folder**, it often lands
+   there) and type the 6-digit code on the sign-in screen. The code is valid for 10 minutes.
+   You stay signed in for 7 days.
+
+Why a code and not a link: the university mail system (Microsoft Defender) opens and clicks
+every link in an email to check it, which would use up a one-time link before you could.
 
 There are no passwords. Only addresses an administrator has added can sign in; if no email
 arrives, check your junk folder, then ask an administrator to check your account.
@@ -17,7 +21,7 @@ arrives, check your junk folder, then ask an administrator to check your account
 After your first sign-in, open your account (avatar, bottom left → **Account**) and click
 **Dodaj passkey**. Your phone or computer saves it with Face ID, Touch ID, Windows Hello or a
 security key. Next time the login page offers the passkey right in the email field: one tap
-and you are in. You can remove passkeys on the same page. Passkeys are tied to the site's
+and you are in, no code needed. You can remove passkeys on the same page. Passkeys are tied to the site's
 address; if the site moves to a new domain, add them again.
 
 ## Roles

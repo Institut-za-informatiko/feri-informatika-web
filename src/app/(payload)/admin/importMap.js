@@ -25,7 +25,7 @@ import { SectionRowLabel as SectionRowLabel_32687d32410f772fbf8aeadc35e527c1 } f
 import { PasskeyManager as PasskeyManager_7f23b662691828a9616318eecacc2358 } from '@/components/admin/PasskeyManager'
 import { Icon as Icon_066c562e10ad4e70ff0de1a39f9b91f6 } from '@/components/admin/Brand'
 import { Logo as Logo_066c562e10ad4e70ff0de1a39f9b91f6 } from '@/components/admin/Brand'
-import { MagicLinkLogin as MagicLinkLogin_acac6818bdcb6edc27a04fca0a8cb655 } from '@/components/admin/MagicLinkLogin'
+import { SignInForm as SignInForm_238da42f71f829322ab6bd653fcd978c } from '@/components/admin/SignInForm'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
@@ -57,6 +57,6 @@ export const importMap = {
   "@/components/admin/PasskeyManager#PasskeyManager": PasskeyManager_7f23b662691828a9616318eecacc2358,
   "@/components/admin/Brand#Icon": Icon_066c562e10ad4e70ff0de1a39f9b91f6,
   "@/components/admin/Brand#Logo": Logo_066c562e10ad4e70ff0de1a39f9b91f6,
-  "@/components/admin/MagicLinkLogin#MagicLinkLogin": MagicLinkLogin_acac6818bdcb6edc27a04fca0a8cb655,
+  "@/components/admin/SignInForm#SignInForm": SignInForm_238da42f71f829322ab6bd653fcd978c,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }
