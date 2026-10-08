@@ -66,12 +66,18 @@ Other collections have no drafts: **Save** publishes immediately.
 
 ## Slovenian and English
 
-Use the language switcher at the top of an entry (**Slovenščina / English**):
+Every entry has two tabs next to the publish button: **Slovenščina | English**.
 
-- Slovenian is the main language and is required.
-- English is optional. Any field left empty in English shows the Slovenian text on the
-  `/en/` pages.
+- Click **English** to translate: the fields switch to the English version (empty until you
+  fill them in). Live Preview switches to the English page at the same time.
+- An orange dot on a tab means that language has no translation yet.
+- Slovenian is the main language and is required. English is optional: any field left empty
+  in English shows the Slovenian text on the `/en/` pages.
+- To start from the Slovenian text, use **⋮ → Copy to locale** (copies the Slovenian content
+  into English, which you then translate).
 - Images, dates, emails and links are shared between both languages.
+- Publish in each language you changed: **Publish changes** publishes the language you are
+  viewing.
 
 ## Common tasks
 
