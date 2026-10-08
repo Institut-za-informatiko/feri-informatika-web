@@ -4,42 +4,61 @@
     "includes": [
       "src/**/*.ts",
       "src/**/*.tsx",
-      "src/**/*.js",
-      "src/**/*.mjs",
-      "src/**/*.json",
-      "cms/src/**/*.ts",
-      "cms/src/**/*.tsx",
-      "cms/scripts/**/*.ts",
-      "cms/*.ts",
-      "!cms/src/migrations",
-      "!cms/src/payload-types.ts",
-      "!cms/src/app/(payload)",
+      "src/**/*.css",
+      "scripts/**/*.ts",
       "*.ts",
       "*.mjs",
       "*.json",
+      "!src/migrations",
+      "!src/payload-types.ts",
+      "!src/app/(payload)",
+      "!src/components/ui",
       "!**/node_modules",
-      "!**/dist",
-      "!**/.astro",
-      "!**/*.astro"
+      "!**/.next"
     ]
   },
-  "assist": { "actions": { "source": { "organizeImports": "on" } } },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
   "linter": {
     "enabled": true,
     "rules": {
       "recommended": true,
-      "complexity": { "noStaticOnlyClass": "off", "noForEach": "off" },
-      "style": { "noNonNullAssertion": "off" },
-      "suspicious": { "noExplicitAny": "off", "noImplicitAnyLet": "off" },
-      "security": { "noDangerouslySetInnerHtml": "off" },
+      "complexity": {
+        "noStaticOnlyClass": "off",
+        "noForEach": "off"
+      },
+      "style": {
+        "noNonNullAssertion": "off"
+      },
+      "suspicious": {
+        "noExplicitAny": "off",
+        "noImplicitAnyLet": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
+      },
       "correctness": {
-        "noUnusedImports": { "level": "error", "fix": "safe" },
+        "noUnusedImports": {
+          "level": "error",
+          "fix": "safe"
+        },
         "useExhaustiveDependencies": "off"
       },
-      "a11y": { "useKeyWithClickEvents": "off" }
+      "a11y": {
+        "useKeyWithClickEvents": "off"
+      }
     }
   },
-  "formatter": { "enabled": true, "indentStyle": "space", "indentWidth": 2 },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2
+  },
   "javascript": {
     "formatter": {
       "quoteStyle": "single",
@@ -54,6 +73,11 @@
       "indentStyle": "space",
       "indentWidth": 2,
       "lineEnding": "lf"
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
     }
   }
 }

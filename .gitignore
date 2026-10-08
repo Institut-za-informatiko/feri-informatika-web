@@ -1,7 +1,10 @@
-# build output
-dist/
-# generated types
-.astro/
+# Next.js build output
+.next/
+next-env.d.ts
+*.tsbuildinfo
+
+# uploaded media (local dev; production uses a Docker volume)
+/media/
 
 # dependencies
 node_modules/
@@ -15,6 +18,7 @@ pnpm-debug.log*
 
 # environment variables (encrypted .env.enc is committed)
 .env
+.env.local
 .env.production
 
 # age private key material (must never be committed)
