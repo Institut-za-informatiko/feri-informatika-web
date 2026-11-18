@@ -44,6 +44,8 @@ jobs:
 
   image:
     runs-on: ubuntu-latest
+    outputs:
+      digest: ${{ steps.build.outputs.digest }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -70,6 +72,7 @@ jobs:
 
       # PRs only build to prove the image works; nothing is pushed or deployed.
       - name: Build and push
+        id: build
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -83,28 +86,73 @@ jobs:
     needs: [lint, image]
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     environment:
       name: ii-preview
       url: https://ii-preview.bclabum.si
     steps:
-      - name: Deploy over SSH
-        env:
-          SSH_KEY: ${{ secrets.BCLABUM_DEPLOY_KEY }}
-          KNOWN_HOSTS: ${{ secrets.BCLABUM_KNOWN_HOSTS }}
-          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install Kustomize
         run: |
-          install -m 700 -d ~/.ssh
-          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
-          # The key is restricted to deploy.sh on the server; the argument is the image tag,
-          # stdin carries this job's token for the GHCR pull.
-          printf '%s' "$GHCR_TOKEN" | ssh -i ~/.ssh/deploy_key urban@157.180.6.182 "sha-${GITHUB_SHA}"
+          set -euo pipefail
+          archive="$RUNNER_TEMP/kustomize.tgz"
+          curl -fsSL --retry 2 -o "$archive" \
+            https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv5.8.3/kustomize_v5.8.3_linux_amd64.tar.gz
+          printf '%s  %s\n' cb9e31198d3f63b44848bd0afc4c8efc56e6cfef9c93a4a39a211940e6decd61 "$archive" | sha256sum -c -
+          tar -xzf "$archive" -C "$RUNNER_TEMP" kustomize
 
-      - name: Smoke test
+      - name: Push image digest to GitOps
+        env:
+          CLUSTER_REPO_DEPLOY_KEY: ${{ secrets.CLUSTER_REPO_DEPLOY_KEY }}
+          DIGEST: ${{ needs.image.outputs.digest }}
         run: |
-          for path in / /en /news /about /staff /admin/login '/api/news?limit=1' /healthz; do
-            code=$(curl -s -o /dev/null -w '%{http_code}' "https://ii-preview.bclabum.si${path}")
-            echo "${code} ${path}"
-            [ "$code" = 200 ] || exit 1
+          set -euo pipefail
+          export LC_ALL=C
+          : "${CLUSTER_REPO_DEPLOY_KEY:?Set the CLUSTER_REPO_DEPLOY_KEY repository secret}"
+          if [[ ! "$DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]]; then
+            echo "The image build did not return a valid digest." >&2
+            exit 1
+          fi
+
+          workdir=$(mktemp -d)
+          trap 'rm -rf "$workdir"' EXIT
+          umask 077
+          printf '%s\n' "$CLUSTER_REPO_DEPLOY_KEY" > "$workdir/key"
+          unset CLUSTER_REPO_DEPLOY_KEY
+          # GitHub's published Ed25519 host key.
+          echo 'github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl' > "$workdir/known_hosts"
+          printf -v GIT_SSH_COMMAND 'ssh -o BatchMode=yes -o IdentitiesOnly=yes -o IdentityAgent=none -o StrictHostKeyChecking=yes -o GlobalKnownHostsFile=/dev/null -o UserKnownHostsFile=%q -i %q' \
+            "$workdir/known_hosts" "$workdir/key"
+          export GIT_SSH_COMMAND
+
+          git clone --single-branch --branch main git@github.com:blockchain-lab-um/bclabum-deployments.git "$workdir/deployments"
+          cd "$workdir/deployments"
+          manifest=apps/base/feri-informatika-web/kustomization.yaml
+          (cd "${manifest%/*}" && "$RUNNER_TEMP/kustomize" edit set image "$IMAGE=$IMAGE@$DIGEST")
+          if git diff --quiet -- "$manifest"; then
+            echo "Image digest is already pinned."
+            exit 0
+          fi
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- "$manifest"
+          git commit -m "feri-informatika-web: deploy ${GITHUB_SHA:0:8}"
+
+          for attempt in 1 2 3; do
+            # A queued or rerun workflow can finish after main advances.
+            source_head=$(git ls-remote --exit-code "https://github.com/$GITHUB_REPOSITORY.git" refs/heads/main)
+            if [[ "${source_head%%$'\t'*}" != "$GITHUB_SHA" ]]; then
+              echo "A newer app commit is on main. Skipping this deploy."
+              exit 0
+            fi
+            if result=$(git push --porcelain origin HEAD:refs/heads/main 2>&1); then
+              printf '%s\n' "$result"
+              exit 0
+            fi
+            printf '%s\n' "$result" >&2
+            if [[ "$attempt" == 3 ]] || ! grep -Eq '\[rejected\].*\((fetch first|non-fast-forward)\)' <<< "$result"; then
+              exit 1
+            fi
+            git fetch origin main
+            git rebase FETCH_HEAD
           done
