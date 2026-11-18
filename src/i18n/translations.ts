@@ -59,6 +59,11 @@ export const translations = {
     'kiosk.qrTitle': 'Preberi celotno novico',
     'kiosk.qrLead': 'Skeniraj kodo s telefonom.',
     'kiosk.qrAlt': 'QR koda do novice',
+    'gate.title': 'Predogled je zaščiten',
+    'gate.lead': 'Za ogled strani vpiši geslo.',
+    'gate.password': 'Geslo',
+    'gate.submit': 'Odkleni',
+    'gate.wrong': 'Geslo ni pravilno.',
 
     // ── About ───────────────────────────────────────────────────
     'about.title': 'O inštitutu',
@@ -274,6 +279,11 @@ export const translations = {
     'kiosk.qrTitle': 'Read the full story',
     'kiosk.qrLead': 'Scan the code with your phone.',
     'kiosk.qrAlt': 'QR code linking to the story',
+    'gate.title': 'This preview is protected',
+    'gate.lead': 'Enter the password to view the site.',
+    'gate.password': 'Password',
+    'gate.submit': 'Unlock',
+    'gate.wrong': 'Wrong password.',
 
     // ── About ───────────────────────────────────────────────────
     'about.title': 'About the Institute',
