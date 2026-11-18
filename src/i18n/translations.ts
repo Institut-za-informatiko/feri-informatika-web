@@ -40,6 +40,25 @@ export const translations = {
     'home.highlightedNews': 'Izpostavljene novice',
     'home.highlightedAchievements': 'Izpostavljeni dosežki',
     'home.highlightedProjects': 'Izpostavljeni projekti',
+    'home.highlights': 'Izpostavljeno',
+    'home.allNews': 'Vse novice',
+    'home.allAchievements': 'Vsi dosežki',
+    'home.research.title': 'Kaj raziskujemo',
+    'home.research.lead':
+      'Laboratoriji inštituta in njihova raziskovalna področja, pod okriljem raziskovalnega programa ARIS Informacijski sistemi.',
+    'home.research.all': 'Vsi laboratoriji',
+    'home.research.cta': 'Spoznaj ekipe',
+    'home.achievement': 'Dosežek',
+    'home.study.title': 'Teorija, ki jo preizkusiš v industriji.',
+    'home.study.lead':
+      'Dodiplomski in magistrski študijski programi informatike na UM FERI.',
+
+    // ── Kiosk (info screen) ─────────────────────────────────────
+    'kiosk.title': 'Novice na zaslonu',
+    'kiosk.next': 'Sledi',
+    'kiosk.qrTitle': 'Preberi celotno novico',
+    'kiosk.qrLead': 'Skeniraj kodo s telefonom.',
+    'kiosk.qrAlt': 'QR koda do novice',
 
     // ── About ───────────────────────────────────────────────────
     'about.title': 'O inštitutu',
@@ -236,6 +255,25 @@ export const translations = {
     'home.highlightedNews': 'Highlighted News',
     'home.highlightedAchievements': 'Highlighted Achievements',
     'home.highlightedProjects': 'Highlighted Projects',
+    'home.highlights': 'Highlights',
+    'home.allNews': 'All news',
+    'home.allAchievements': 'All achievements',
+    'home.research.title': 'What we research',
+    'home.research.lead':
+      "The institute's laboratories and their research areas, under the ARIS research programme Information Systems.",
+    'home.research.all': 'All laboratories',
+    'home.research.cta': 'Meet the teams',
+    'home.achievement': 'Achievement',
+    'home.study.title': 'Theory you put to the test in industry.',
+    'home.study.lead':
+      "Undergraduate and master's informatics programmes at UM FERI.",
+
+    // ── Kiosk (info screen) ─────────────────────────────────────
+    'kiosk.title': 'News screen',
+    'kiosk.next': 'Up next',
+    'kiosk.qrTitle': 'Read the full story',
+    'kiosk.qrLead': 'Scan the code with your phone.',
+    'kiosk.qrAlt': 'QR code linking to the story',
 
     // ── About ───────────────────────────────────────────────────
     'about.title': 'About the Institute',
