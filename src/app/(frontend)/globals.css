@@ -112,3 +112,13 @@
     transform: translateY(-0.75rem);
   }
 }
+
+/* Progress bar that fills while a slide shows (HeroTabs, KioskBoard) */
+@keyframes hero-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}

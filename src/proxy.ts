@@ -15,8 +15,9 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Skip the CMS (admin, REST API, preview routes), Next internals and files in public/.
+  // Skip the CMS (admin, REST API, preview routes), the kiosk screen, Next internals and
+  // files in public/.
   matcher: [
-    '/((?!(?:admin|api|next|_next|logos|assets)(?:/|$)|favicon\\.|robots\\.txt|healthz).*)',
+    '/((?!(?:admin|api|next|_next|logos|assets|kiosk)(?:/|$)|favicon\\.|robots\\.txt|healthz).*)',
   ],
 };

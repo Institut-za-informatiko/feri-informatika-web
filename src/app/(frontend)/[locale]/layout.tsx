@@ -1,5 +1,4 @@
 import '../globals.css';
-import { Open_Sans, Titillium_Web } from 'next/font/google';
 import { draftMode } from 'next/headers';
 import { notFound } from 'next/navigation';
 import type { ReactNode } from 'react';
@@ -7,18 +6,7 @@ import { RefreshOnSave } from '@/components/client/RefreshOnSave';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { isLang } from '@/i18n/translations';
-
-const openSans = Open_Sans({
-  subsets: ['latin', 'latin-ext'],
-  variable: '--font-open-sans',
-  display: 'swap',
-});
-const titillium = Titillium_Web({
-  subsets: ['latin', 'latin-ext'],
-  weight: ['400', '600', '700'],
-  variable: '--font-titillium',
-  display: 'swap',
-});
+import { openSans, titillium } from '@/lib/fonts';
 
 export const metadata = {
   title: {
